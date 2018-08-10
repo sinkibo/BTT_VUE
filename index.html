@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>BTT Client Engine Example(VUE)</title>
+        <link rel="stylesheet" href="./static/font-awesome-4.7.0/css/font-awesome.css"/>
+        <link href="./static/bootstrap4/css/bootstrap.min.css" rel="stylesheet"/>
+
+        <script type="text/javascript" src="./static/jquery/jquery-3.3.1.js"></script>
+        <script type="text/javascript" src="./static/unicomsi/btt/clientengine/BTTLoader.js"></script>
+        <script type="text/javascript">
+          // load from the integrated JS of client engine
+          // here it is /assets/unicomsi/btt-clientEngine.uncompressed.js
+          //BTT.loadBTT("static", "unicomsi/btt-clientEngine.uncompressed.js");
+          // load from the source JS of client engine at /assets folder
+           BTT.loadBTT("static");
+        </script>
+
+    </head>
+    <body class="bg-light">
+        <div id="appdiv"></div>
+        <footer class="fixed-bottom bg-secondary">
+            <span class="float-right">
+                <a >BTT Client Engine Example(VUE)</a> © <a href="https://www.unicomglobal.com/about/contact-us/" target="_unicom">unicom</a>
+                  &nbsp;
+            </span>
+        </footer>
+    </body>
+
+</html>
