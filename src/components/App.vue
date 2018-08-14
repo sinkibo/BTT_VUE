@@ -10,7 +10,7 @@
             <router-link to="/myAccount">My Account</router-link>
           </li>
           <li>
-            <router-link to="/transer">Transer</router-link>
+            <router-link to="/trans">Transer</router-link>
           </li>
           <li class="dropdown">
             <router-link to="/help">Help <b class="caret"></b>

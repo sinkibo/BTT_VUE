@@ -5,7 +5,8 @@ import Router from 'vue-router'
 import App from '@/components/App.vue'
 import Home from '@/components/Home.vue'
 import MyAccount from '@/components/MyAccount.vue'
-import AccountDetail from '@/components/AccountDetail.vue'
+import Transfer from '@/components/Transfer.vue'
+import TransferResult from '@/components/TransferResult.vue'
 import Login from '@/components/Login.vue'
 import { AuthService } from './user/auth-service'
 import { ClientEngineService } from './app/unicomsi/btt/clientengine/vue/ClientEngineService'
@@ -45,14 +46,25 @@ const router =new Router({
       path: '/login',
       name: 'Login',
       component: Login
+    },
+    {
+      path: '/trans',
+      name: 'Transfer',
+      component: Transfer
+    },
+    {
+      path: '/transResult',
+      name: 'TransferResult',
+      component: TransferResult
     }
+    
   ]
 })
 /* eslint-disable no-new */
 new Vue({
   el: '#appdiv',
   router,
-  components: { App, MyAccount, Home, Login, 'account-detail':AccountDetail },
+  components: { App, MyAccount, Home, Login, Transfer, TransferResult },
   template: '<App/>',
   provide: {
     clientEngineService: new ClientEngineService(window['BTT']),
