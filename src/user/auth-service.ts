@@ -5,14 +5,15 @@ import Router from 'vue-router'
 import { Inject } from 'vue-property-decorator'
 
 export class AuthService {
-  @Inject('clientEngineService') private _btt: ClientEngineService;
-  private _user: UserModel = new UserModel();
+  private _btt: ClientEngineService;
+  private _user: UserModel;
 
   // store the URL so we can redirect after logging in
   redirectUrl: string;
 
-  constructor(_btt: ClientEngineService, public router: Router){
+  constructor(_btt: ClientEngineService, public router: Router, _user: UserModel){
     this._btt = _btt;
+    this._user = _user;
   }
 
   login(): Promise<any> {

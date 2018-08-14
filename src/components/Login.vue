@@ -5,8 +5,8 @@
             <div class="row">
                 <div class="col-12">
                     <!--mat-form-field hideRequiredMarker="false" floatLabel="auto"-->
-                        <input matInput name="account_id" v-model="auth_data.user.account_id" placeholder="Account ID" required>
-                        <button type="button" mat-button v-if="auth_data.user.account_id" matSuffix mat-icon-button aria-label="Clear" @click="clear('account')">
+                        <input matInput name="account_id" v-model="auths.user.account_id" placeholder="Account ID" required>
+                        <button type="button" mat-button v-if="auths.user.account_id" matSuffix mat-icon-button aria-label="Clear" @click="clear('account')">
                             <i class="fa fa-close" style="color:green"></i>
                         </button>
                         <!--mat-hint>Please input your Account ID</mat-hint-->
@@ -17,8 +17,8 @@
             <div class="row">
                 <div class="col-12">
                     <!--mat-form-field hideRequiredMarker="false" floatLabel="auto"-->
-                        <input matInput name="password" v-model="auth_data._user.password" placeholder="Password" type="password" required>
-                        <button type="button" mat-button v-if="auth_data._user.password" matSuffix mat-icon-button aria-label="Clear" @click="clear('pwd')">
+                        <input matInput name="password" v-model="auths._user.password" placeholder="Password" type="password" required>
+                        <button type="button" mat-button v-if="auths._user.password" matSuffix mat-icon-button aria-label="Clear" @click="clear('pwd')">
                             <i class="fa fa-close" style="color:green"></i>
                         </button>
                         <!--mat-hint>Please input your Password</mat-hint-->
@@ -29,8 +29,8 @@
     
             <div class="row" >
                 <div class="col-12" style="text-align:center" >
-                    <button mat-raised-button color="primary" type="submit" v-if="!auth_data.isLoggedIn" >Login</button>
-                    <button mat-raised-button color="warn"    type="button" @click="logout" v-if="auth_data.isLoggedIn">Logout</button>
+                    <button mat-raised-button color="primary" type="submit" v-if="!auths.isLoggedIn" >Login</button>
+                    <button mat-raised-button color="warn"    type="button" @click="logout" v-if="auths.isLoggedIn">Logout</button>
                 </div>
             </div>
         </form>
@@ -63,7 +63,6 @@ export default class Login extends Vue {
     @Inject('auths') private auths: AuthService | any;
     @Inject('isDevMode') private isDevMode: boolean | any;
     message = "";
-    auth_data = this.auths;
 
     doLogin(credential:any): void {
         this.message = 'Trying to log in ...';
@@ -96,15 +95,15 @@ export default class Login extends Vue {
 
     clear(type :string) : void{
             if(type == 'pwd'){
-                Vue.set(this.auth_data._user,'password', '');
+                Vue.set(this.auths._user,'password', '');
             }else if(type == 'account'){
-                Vue.set(this.auth_data._user,'account_id', '');
+                Vue.set(this.auths._user,'account_id', '');
             }
             
     }
 
     get user() :any{
-        return this.auth_data._user;
+        return this.auths._user;
     }
     
 }

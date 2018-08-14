@@ -5,14 +5,30 @@ import Router from 'vue-router'
 import App from '@/components/App.vue'
 import Home from '@/components/Home.vue'
 import MyAccount from '@/components/MyAccount.vue'
+import AccountDetail from '@/components/AccountDetail.vue'
 import Login from '@/components/Login.vue'
-import Main from '@/components/Main.vue'
 import { AuthService } from './user/auth-service'
 import { ClientEngineService } from './app/unicomsi/btt/clientengine/vue/ClientEngineService'
+import { UserModel } from "./user/user-model";
+
+var padDate=function(va){
+  va=va<10?'0'+va:va;
+  return va
+}
 
 Vue.config.productionTip = false;
 Vue.config.devtools = true;
 Vue.use(Router)
+Vue.filter('formatDate',function(val){
+  var value=new Date(val);
+  var year=value.getFullYear();
+  var month=padDate(value.getMonth()+1);
+  var day=padDate(value.getDate());
+  var hour=padDate(value.getHours());
+  var minutes=padDate(value.getMinutes());
+  var seconds=padDate(value.getSeconds());
+  return year+'-'+month+'-'+day;
+})
 const router =new Router({
   routes: [
     {
@@ -36,13 +52,14 @@ const router =new Router({
 new Vue({
   el: '#appdiv',
   router,
-  components: { App, MyAccount, Home, Login },
+  components: { App, MyAccount, Home, Login, 'account-detail':AccountDetail },
   template: '<App/>',
   provide: {
     clientEngineService: new ClientEngineService(window['BTT']),
-    auths: new AuthService(new ClientEngineService(window['BTT']), router),
+    auths: new AuthService(new ClientEngineService(window['BTT']), router, new UserModel()),
     isDevMode: false
    }
+
 })
 
 // 扩充
