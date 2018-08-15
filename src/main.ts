@@ -2,6 +2,7 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import Router from 'vue-router'
+import Routers  from './router/index'
 import App from '@/components/App.vue'
 import Home from '@/components/Home.vue'
 import MyAccount from '@/components/MyAccount.vue'
@@ -10,7 +11,11 @@ import TransferResult from '@/components/TransferResult.vue'
 import Login from '@/components/Login.vue'
 import { AuthService } from './user/auth-service'
 import { ClientEngineService } from './app/unicomsi/btt/clientengine/vue/ClientEngineService'
-import { UserModel } from "./user/user-model";
+import { UserModel } from "./user/user-model"
+import iView from 'iview'
+import { locale, Page } from 'iview'
+import lang from 'iview/dist/locale/en-US'
+import 'iview/dist/styles/iview.css'
 
 var padDate=function(va){
   va=va<10?'0'+va:va;
@@ -19,7 +24,26 @@ var padDate=function(va){
 
 Vue.config.productionTip = false;
 Vue.config.devtools = true;
-Vue.use(Router)
+Vue.use(Router);
+const router = Routers;
+router.beforeEach((to,from,next) => {
+  console.log(from);
+  console.log("from above ++++++++");
+  console.log(to);
+  console.log("to above ++++");
+  if(from.name === null && to.name != 'Home' && to.name != 'Login'){
+    next('/login');
+  }else
+    next();
+});
+
+Vue.use(iView,{
+  transfer: true,
+  size: 'large'
+});
+// configure language
+locale(lang);
+
 Vue.filter('formatDate',function(val){
   var value=new Date(val);
   var year=value.getFullYear();
@@ -30,36 +54,7 @@ Vue.filter('formatDate',function(val){
   var seconds=padDate(value.getSeconds());
   return year+'-'+month+'-'+day;
 })
-const router =new Router({
-  routes: [
-    {
-      path: '/myAccount',
-      name: 'MyAccount',
-      component: MyAccount
-    },
-    {
-      path: '/',
-      name: 'Home',
-      component: Home
-    },
-    {
-      path: '/login',
-      name: 'Login',
-      component: Login
-    },
-    {
-      path: '/trans',
-      name: 'Transfer',
-      component: Transfer
-    },
-    {
-      path: '/transResult',
-      name: 'TransferResult',
-      component: TransferResult
-    }
-    
-  ]
-})
+
 /* eslint-disable no-new */
 new Vue({
   el: '#appdiv',

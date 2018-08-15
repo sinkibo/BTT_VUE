@@ -1,12 +1,12 @@
 <template>
   <div class="dialog">
       <!--外层的遮罩 点击事件用来关闭弹窗，isShow控制弹窗显示 隐藏的props-->
-      <div class="dialog-cover back"  v-if="isShow"  @click="closeMyself"></div>
+      <div class="dialog-cover"  v-if="isShow"  @click="closeMyself"></div>
       <!-- transition 这里可以加一些简单的动画效果 -->
       <transition name="drop">
          <!--style 通过props 控制内容的样式  -->
         <div class="dialog-content" :style="{top:topDistance+'%',width:widNum+'%',left:leftSite+'%'}"  v-if="isShow">
-          <div class="dialog_head back">
+          <div class="dialog_head">
              <!--弹窗头部 title-->
               <slot name="header">提示信息</slot>
           </div>
@@ -15,8 +15,8 @@
             <slot name="main">弹窗内容</slot>
           </div>
           <!--弹窗关闭按钮-->
-          <div  class="foot_close" @click="closeMyself">
-              <div class="close_img back"></div>
+          <div class="foot_close" @click="closeMyself">
+              <Icon type="md-close"></Icon>
           </div>
         </div>
     </transition>
@@ -30,8 +30,8 @@ export default class AccountDetail extends Vue {
     @Prop({type:Boolean,default: false,required: true}) isShow: Boolean | any;
     @Prop({type: Number,default: 86.5}) widNum: Number | any;
     @Prop({type: Number,default: 6.5}) leftSite: Number | any;
-    @Prop({type: Number,default: 35}) topDistance: Number | any;
-    @Prop({type: Number,default: 22}) pdt: Number | any;
+    @Prop({type: Number,default: 15}) topDistance: Number | any;
+    @Prop({type: Number,default: 0}) pdt: Number | any;
     @Prop({type: Number,default: 47}) pdb: Number | any;
 
     closeMyself () {
@@ -65,4 +65,33 @@ export default class AccountDetail extends Vue {
     align-items: center;
     z-index: 300;
  }
+ .dialog_head{
+    width: 86.5%;
+    height: 43px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+ }
+ .dialog_main {
+    background: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    width: 86.5%;
+    padding: 22px 0 47px 0;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+  }
+  .foot_close {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: #fcca03;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    margin-top: -25px;
+  }
 </style>

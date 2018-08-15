@@ -1,106 +1,71 @@
 <template>
     <div>
-        <h2 class="win-title">Customer Profile</h2>
-        <div class="row">
-            <div class="col-sm-12 col-md-4 col-topic">
-                <div class="row">
-                    <div class="col-12 col-sm-6 col-md-12 text-nowrap" style="padding-right:5px;">
-                        <h4>{{ auth.name }}</h4>
-                        <span>UserID: {{ auth.account_id }}</span><br/>
-                        <span>e-Mail: {{ auth.name }}@btt.com</span><br/>
-                        <span>Balance: {{ account.total_balance }}</span><br/>
-                    </div>
-                    <div class="col-12 col-sm-6 col-md-12">
-                        <img class="img-thumbnail" style="margin-top: 2em;margin-bottom:2em; height:180px;" :src="auth.photo" alt="customer image">
-                    </div>
-                </div>
-            </div>
-            <!-- 2nd row/col: account list -->
-            <div class="col-sm-12 col-md-8 col-topic">
-                <h4>Accounts</h4>
-                <div style="margin:1em; border-right: 1px solid #808080; padding-right:15px;">
-                    <div class="row grid-header text-white">
-                        <div class="col-2 col-sm-1 grid-cell bg-secondary" style="padding-left: 5px">
-                        No.
-                        </div>
-                        <div class="col-6 col-sm-3 grid-cell bg-primary">
-                        Account
-                        </div>    
-                        <div class="col-4 col-sm-2 grid-cell bg-danger text-center">
-                        Type
-                        </div>
-                        <div class="col-8 col-sm-4 grid-cell bg-success text-right">
-                        Balance
-                        </div>
-                        <div class="col-4 col-sm-2 grid-cell bg-secondary text-center">
-                        Details
-                        </div>
-                    </div>
-                    <div class="row grid-row" v-for="(item, index) in account.cardList" :key="index">
-                        <div class="col-2 col-sm-1 grid-cell">
-                        {{index+1}}
-                        </div>
-                        <div class="col-6 col-sm-3 text-primary font-weight-bold grid-cell">
-                        {{item.card_id}}
-                        </div>
-                        <div class="col-4 col-sm-2 text-center grid-cell" :class="{'text-danger':item.card_type=='credit'}" >
-                        {{item.card_type}}
-                        </div>
-                        <div class="col-8 col-sm-4 text-right text-success grid-cell">
-                        {{item.balance}}
-                        </div>
-                        <div class="col-4 col-sm-2 text-center grid-cell" style="cursor: pointer;" @click="toggleDetail(item.card_id)">
-                        ...
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <Card style="width:95%;margin:20px;height:90%">
+            <p slot="title">Customer Profile</p>
+            <p>
+                <Row type="flex" justify="start" class="code-row-bg">
+                    <Col span="6">
+                        <Alert type="warning" style="height:100%;height:100%">
+                            <Card style="height:100%;height:100%">
+                                <p slot="title">{{ auth.name }}</p>
+                                <p>UserID: {{ auth.account_id }}</p>
+                                <p>e-Mail: {{ auth.name }}@btt.com</p>
+                                <p>Balance: {{ account.total_balance }}</p>
+                                <p><img class="img-thumbnail" style="margin-top: 2em;margin-bottom:2em; height:180px;" :src="auth.photo" alt="customer image"></p>
+                            </Card>
+                        </Alert>
+                    </Col>
+                    <Col span="17" offset="1">
+                        <Alert type="success" style="height:100%; width:100%">
+                            <Card style="height:100%; width:100%">
+                                <p slot="title">Accounts</p>
+                                <p>
+                                    <Row class-name="layout-tablecell layout-headercell">
+                                        <Col span="5" class-name="layout-tablecol1">NO.</Col>
+                                        <Col span="5" class-name="layout-tablecol2">Account</Col>
+                                        <Col span="5" class-name="layout-tablecol3">Type</Col>
+                                        <Col span="5" class-name="layout-tablecol4">Blance</Col>
+                                        <Col span="4" class-name="layout-tablecol5">Details</Col>
+                                    </Row>
+                                    <Row v-for="(item, index) in account.cardList" :key="index" class-name="layout-tablecell">
+                                        <Col span="5">{{index+1}}</Col>
+                                        <Col span="5" class-name="layout-col-color-blue">{{item.card_id}}</Col>
+                                        <Col v-if="item.card_type == 'credit'" span="5" class-name="layout-col-color-red">{{item.card_type}}</Col>
+                                        <Col v-if="item.card_type == 'debit'" span="5">{{item.card_type}}</Col>
+                                        <Col span="5" class-name="layout-col-color-green">{{item.balance}}</Col>
+                                        <Col span="4"><div @click="toggleDetail(item.card_id)" style="cursor: pointer;">......</div></Col>
+                                    </Row>
+                                </p>
+                            </Card>
+                        </Alert>
+                    </Col>
+                </Row>
+            </p>
+        </Card>
+
         <AccouneDetail :is-show="isShowPublish" @on-close="closeDialog">
             <div slot="header">
-                <div class="modal-header">
-                    <h3 class="modal-title">Account Histoy: {{this.history.selectCardId}}</h3>
-                    <button type="button" class="close pull-right" aria-label="Close" @click="closeDialog">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
+                <Alert type="error" style="height:100%; width:100%">
+                    <h3>Account Histoy: {{this.history.selectCardId}}</h3>
+                </Alert>
             </div>
-            <div class="dialog_publish_main" slot="main">
-                <div class="row grid-header text-white" style="border-right: 1px solid #808080;">
-                    <div class="col-2 col-sm-1 grid-cell bg-secondary" style="padding-left: 5px">
-                    No.
-                    </div>
-                    <div class="col-6 col-sm-3 text-center grid-cell bg-primary">
-                    Date
-                    </div>
-                    <div class="col-4 col-sm-2 grid-cell bg-danger text-center">
-                    Type
-                    </div>
-                    <div class="col-8 col-sm-4 grid-cell bg-success text-right">
-                    Amount
-                    </div>
-                    <div class="col-4 col-sm-2 grid-cell bg-secondary text-center">
-                    Details
-                    </div>
-                </div>
-
-                <div class="row grid-row" v-for="(item, index) in this.history.historyList" style="border-right: 1px solid #808080;" :key="index">
-                    <div class="col-2 col-sm-1 grid-cell">
-                    {{index+1}}
-                    </div>
-                    <div class="col-6 col-sm-3 text-center text-primary grid-cell text-nowrap">
-                    {{item.date | formatDate}}
-                    </div>
-                    <div class="col-4 col-sm-2 text-center grid-cell" :class="{'text-danger':(item.amount+'').indexOf('-')>-1}">
-                    {{(item.amount+'').indexOf('-')>-1 ? "outcome" : "income"}}
-                    </div>
-                    <div class="col-8 col-sm-4 text-right text-success grid-cell">
-                    {{item.amount}}
-                    </div>
-                    <div class="col-4 col-sm-2 text-center grid-cell">
-                    {{item.name}}
-                    </div>
-                </div>
+            <div slot="main">
+                <Alert type="success" style="height:100%; width:100%">
+                    <Row type="flex" justify="start" class="code-row-bg">
+                        <Col span="5" class-name="layout-tablecol1">NO.</Col>
+                        <Col span="5" class-name="layout-tablecol2">Date</Col>
+                        <Col span="5" class-name="layout-tablecol3">Type</Col>
+                        <Col span="5" class-name="layout-tablecol4">Amount</Col>
+                        <Col span="4" class-name="layout-tablecol5">Details</Col>
+                    </Row>
+                    <Row v-for="(item, index) in this.history.historyList" :key="index" type="flex" justify="start" class="code-row-bg">
+                        <Col span="5">{{index+1}}</Col>
+                        <Col span="5">{{item.date | formatDate}}</Col>
+                        <Col span="5" style="{'color':(item.amount+'').indexOf('-')>-1 ? 'blue':'green'}">{{(item.amount+'').indexOf('-')>-1 ? "outcome" : "income"}}</Col>
+                        <Col span="5">{{item.amount}}</Col>
+                        <Col span="4">{{item.name}}</Col>
+                    </Row>
+                </Alert>
             </div>
         </AccouneDetail>
     </div>
@@ -168,5 +133,39 @@ export default class MyAccount extends Vue {
 }
 
 </script>
-<style>
+<style scoped>
+.layout-tablecell{
+    line-height: 2.5em;
+    border-left: 1px solid #dcdee2;
+    border-bottom: 1px solid #dcdee2;
+    border-right: 1px solid #dcdee2;
+}
+.layout-col-color-blue{
+    color: blue;
+}
+.layout-col-color-green{
+    color: green;
+}
+.layout-col-color-red{
+   color: red; 
+}
+.layout-headercell{
+    color: white;
+    font-weight: bold;
+}
+.layout-tablecol1{
+    background-color: #868e96!important;
+}
+.layout-tablecol2{
+    background-color: #007bff!important
+}
+.layout-tablecol3{
+    background-color: #f44336!important;
+}
+.layout-tablecol4{
+    background-color: green!important;
+}
+.layout-tablecol5{
+    background-color: #ffd77a!important;
+}
 </style>

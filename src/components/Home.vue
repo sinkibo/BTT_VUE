@@ -1,36 +1,25 @@
 <template>
     <div>
-        <!--ng-template #popTemplate>
-            Pause on mouse hover,<br/>
-            Click to switch page.<br/>
-            <span style="color:red;">{{pop['showtimer']}}</span>
-        </ng-template-->
-        <div class="container" style="text-align:center;">
+        <div style="text-align:center;">
             <h2>Welcome to BTT VUE Example!
-                &nbsp;&nbsp;<button class="btn btn-outline-success my-2 my-sm-0" @click= "login" v-show="!auths.isLoggedIn">Start</button>
+                &nbsp;&nbsp;<Button @click= "login" v-show="!auths.isLoggedIn" type="primary">Start</Button>
             </h2>
-            <!--carousel id="home-carousel" [interval]="10000">
-                <slide>
-                    <img src="../assets/images/BTT.jpg" alt="What is BTT?" style="display: block; width: 100%;">
-                </slide>
-                <slide>
-                    <img src="../assets/images/ClientEngine.jpg" alt="Client Engine Architecture" style="display: block; width: 100%;">
-                </slide>
-                <slide>
-                    <img src="../assets/images/sample.jpg" alt="BTT Angular Sample" style="display: block; width: 100%;">
-                    <div class="carousel-caption d-md-block">
-                    <a href="https://support.unicomsi.com/manuals/mbn/900/">About BTT Client Engine</a>
+            <Carousel autoplay dots="outside" trigger="click" height="auto" arrow="always">
+                <CarouselItem>
+                    <div class="demo-carousel"><img src="../../static/images/BTT.jpg" alt="What is BTT?" style="display: block; width: 100%; height:100%"></div>
+                </CarouselItem>
+                <CarouselItem>
+                    <div class="demo-carousel"><img src="../../static/images/ClientEngine.jpg" alt="Client Engine Architecture" style="display: block; width: 100%; height:100%"></div>
+                </CarouselItem>
+                <CarouselItem>
+                    <div class="demo-carousel">
+                        <img src="../../static/images/sample.jpg" alt="BTT Angular Sample" style="display: block; width: 100%; height:100%">
+                        <div>
+                        <a href="https://support.unicomsi.com/manuals/mbn/900/">About BTT Client Engine</a>
+                        </div>
                     </div>
-                </slide>
-            </carousel-->
-            <!--span
-                #pop="bs-popover"
-                popoverTitle="Tech Notes"
-                [popover]="popTemplate"
-                placement="top"
-                [isOpen]="dev.isDevMode"
-                (onShown)="hidePopAfter(pop, 4)"
-            >&nbsp;</span-->
+                </CarouselItem>
+            </Carousel>
         </div>
 
         <!-- debug information -->
@@ -51,17 +40,14 @@ import {  AuthService } from '../user/auth-service';
 import { ClientEngineService } from '../app/unicomsi/btt/clientengine/vue/ClientEngineService';
 @Component
 export default class Home extends Vue {
-    //@Prop() name!: string;
 
     @Inject('clientEngineService') private clientEngineService: ClientEngineService | any;
     @Inject('auths') private auths: AuthService | any;
     @Inject('isDevMode') private isDevMode: boolean | any;
 
-
     login(){
         this.$router.push({ path: 'login' });
     }
-
     
 }
 

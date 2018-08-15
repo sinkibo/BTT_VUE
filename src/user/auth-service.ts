@@ -2,7 +2,6 @@ import { UserModel } from "./user-model";
 import { ClientEngineService, Store } from '../app/unicomsi/btt/clientengine/vue/ClientEngineService';
 import { Flow } from "../app/unicomsi/btt/clientengine/vue/Flow";
 import Router from 'vue-router'
-import { Inject } from 'vue-property-decorator'
 
 export class AuthService {
   private _btt: ClientEngineService;

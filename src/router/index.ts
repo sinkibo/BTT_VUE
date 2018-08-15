@@ -1,17 +1,42 @@
-import Vue from 'vue'
 import Router from 'vue-router'
-import HelloWorld from '../components/HelloWorld.vue'
-import Home from '../components/Home.vue'
-import Main from '../components/Main.vue'
-
-Vue.use(Router)
+import Home from '@/components/Home.vue'
+import MyAccount from '@/components/MyAccount.vue'
+import Transfer from '@/components/Transfer.vue'
+import TransferResult from '@/components/TransferResult.vue'
+import Login from '@/components/Login.vue'
 
 export default new Router({
-  routes: [
-    {
-      path: '/',
-      name: 'Home',
-      component: Home
-    }
+    routes: [
+      {
+        path: '/myAccount',
+        name: 'MyAccount',
+        component: MyAccount
+      },
+      {
+        path: '/',
+        name: 'Home',
+        component: Home
+      },
+      {
+        path: '/login',
+        name: 'Login',
+        component: Login
+      },
+      {
+        path: '/trans',
+        name: 'Transfer',
+        component: Transfer
+      },
+      {
+        path: '/transResult',
+        name: 'TransferResult',
+        component: TransferResult
+      },
+      {
+        path: '/home',
+        name: 'Home',
+        component: Home
+      }
   ]
+  
 })

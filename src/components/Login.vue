@@ -1,39 +1,23 @@
 <template>
-    <div>
-        <h2 class="win-title">Login</h2>
-        <form class="bg-white" style="min-width:300px;" @submit.prevent="doLogin">
-            <div class="row">
-                <div class="col-12">
-                    <!--mat-form-field hideRequiredMarker="false" floatLabel="auto"-->
-                        <input matInput name="account_id" v-model="auths.user.account_id" placeholder="Account ID" required>
-                        <button type="button" mat-button v-if="auths.user.account_id" matSuffix mat-icon-button aria-label="Clear" @click="clear('account')">
-                            <i class="fa fa-close" style="color:green"></i>
-                        </button>
-                        <!--mat-hint>Please input your Account ID</mat-hint-->
-                    <!--/mat-form-field-->
+    <div class="login">
+        <Card :bordered="false">
+            <p slot="title">Login</p>
+            <p>
+                <div>
+                    <Input type="text" :clearable=true :maxlength=20 prefix="ios-contact" placeholder="Enter name" style="width: auto" v-model="auths.user.account_id"/>
                 </div>
-            </div>
-            <br/>
-            <div class="row">
-                <div class="col-12">
-                    <!--mat-form-field hideRequiredMarker="false" floatLabel="auto"-->
-                        <input matInput name="password" v-model="auths._user.password" placeholder="Password" type="password" required>
-                        <button type="button" mat-button v-if="auths._user.password" matSuffix mat-icon-button aria-label="Clear" @click="clear('pwd')">
-                            <i class="fa fa-close" style="color:green"></i>
-                        </button>
-                        <!--mat-hint>Please input your Password</mat-hint-->
-                    <!--/mat-form-field-->
+                <br/>
+                <div>
+                    <Input type="password" :clearable=true :maxlength=20 prefix="ios-lock" placeholder="Enter password" style="width: auto" v-model="auths.user.password"/>
                 </div>
-            </div>
-            <br/>
-    
-            <div class="row" >
-                <div class="col-12" style="text-align:center" >
-                    <button mat-raised-button color="primary" type="submit" v-if="!auths.isLoggedIn" >Login</button>
-                    <button mat-raised-button color="warn"    type="button" @click="logout" v-if="auths.isLoggedIn">Logout</button>
+                <br/>
+            
+                <div>
+                    <Button v-if="!auths.isLoggedIn" type="primary" @click="doLogin">Start</Button>
+                    <Button type="warning" @click="logout" v-if="auths.isLoggedIn">Logout</Button>
                 </div>
-            </div>
-        </form>
+            </p>
+        </Card>
         <span class="mat-error">{{ message }}</span>
 
         <!-- debug information -->
@@ -57,6 +41,7 @@ import { Vue, Component, Prop, Inject } from "vue-property-decorator";
 import { UserModel } from "../user/user-model";
 import { AuthService } from '../user/auth-service';
 import { ClientEngineService } from '../app/unicomsi/btt/clientengine/vue/ClientEngineService';
+
 @Component
 export default class Login extends Vue {
     
@@ -64,9 +49,8 @@ export default class Login extends Vue {
     @Inject('isDevMode') private isDevMode: boolean | any;
     message = "";
 
-    doLogin(credential:any): void {
+    doLogin(name:any): void {
         this.message = 'Trying to log in ...';
-
             this.auths.login().then(() => {
                 if (this.auths._user.isLoggedIn){
                     // Get the redirect URL from our auth service
@@ -93,15 +77,6 @@ export default class Login extends Vue {
             this.auths.logout();
     }
 
-    clear(type :string) : void{
-            if(type == 'pwd'){
-                Vue.set(this.auths._user,'password', '');
-            }else if(type == 'account'){
-                Vue.set(this.auths._user,'account_id', '');
-            }
-            
-    }
-
     get user() :any{
         return this.auths._user;
     }
@@ -111,5 +86,11 @@ export default class Login extends Vue {
 </script>
 
 <style>
+.login{
+    background:#eee;
+    padding: 20px;
+    width: 300px;
+    margin: 0 auto;
+}
 
 </style>
