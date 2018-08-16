@@ -44,26 +44,28 @@
         </Card>
 
         <AccouneDetail :is-show="isShowPublish" @on-close="closeDialog">
-            <div slot="header">
-                <Alert type="error" style="height:100%; width:100%">
+            <div slot="header" style="width:100%">
+                <Alert type="error" style="layout-accountdetail-header">
                     <h3>Account Histoy: {{this.history.selectCardId}}</h3>
                 </Alert>
             </div>
-            <div slot="main">
-                <Alert type="success" style="height:100%; width:100%">
-                    <Row type="flex" justify="start" class="code-row-bg">
+            <div slot="main" style="width:100%">
+                <Alert type="success" style="margin: 10px;">
+                    <Row type="flex" justify="start" class="code-row-bg" class-name="layout-tablecell layout-headercell">
                         <Col span="5" class-name="layout-tablecol1">NO.</Col>
                         <Col span="5" class-name="layout-tablecol2">Date</Col>
                         <Col span="5" class-name="layout-tablecol3">Type</Col>
                         <Col span="5" class-name="layout-tablecol4">Amount</Col>
                         <Col span="4" class-name="layout-tablecol5">Details</Col>
                     </Row>
-                    <Row v-for="(item, index) in this.history.historyList" :key="index" type="flex" justify="start" class="code-row-bg">
+                    <Row v-for="(item, index) in this.history.historyList" :key="index" type="flex" justify="start" class="code-row-bg" class-name="layout-tablecell">
                         <Col span="5">{{index+1}}</Col>
-                        <Col span="5">{{item.date | formatDate}}</Col>
-                        <Col span="5" style="{'color':(item.amount+'').indexOf('-')>-1 ? 'blue':'green'}">{{(item.amount+'').indexOf('-')>-1 ? "outcome" : "income"}}</Col>
-                        <Col span="5">{{item.amount}}</Col>
-                        <Col span="4">{{item.name}}</Col>
+                        <Col span="5" class-name="layout-col-color-blue">{{item.date | formatDate}}</Col>
+                        <Col v-if="(item.amount+'').indexOf('-')>-1" span="5" class-name="layout-col-color-red">{{(item.amount+'').indexOf('-')>-1 ? "outcome" : "income"}}</Col>
+                        <Col v-else="" span="5">{{(item.amount+'').indexOf('-')>-1 ? "outcome" : "income"}}</Col>
+                        <Col span="5" class-name="layout-col-color-green">{{item.amount}}</Col>
+                        <Col v-if="item.name == 'Transfer'" span="4" class-name="layout-col-color-yellow">{{item.name}}</Col>
+                        <Col v-else="" span="4">{{item.name}}</Col>
                     </Row>
                 </Alert>
             </div>
@@ -139,6 +141,7 @@ export default class MyAccount extends Vue {
     border-left: 1px solid #dcdee2;
     border-bottom: 1px solid #dcdee2;
     border-right: 1px solid #dcdee2;
+    width:100%;
 }
 .layout-col-color-blue{
     color: blue;
@@ -148,6 +151,9 @@ export default class MyAccount extends Vue {
 }
 .layout-col-color-red{
    color: red; 
+}
+.layout-col-color-yellow{
+    color: orange;
 }
 .layout-headercell{
     color: white;
@@ -167,5 +173,8 @@ export default class MyAccount extends Vue {
 }
 .layout-tablecol5{
     background-color: #ffd77a!important;
+}
+.layout-accountdetail-header{
+    width:100%;
 }
 </style>

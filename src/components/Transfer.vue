@@ -1,63 +1,63 @@
 <template>
     <div>
-        <h2 class="win-title">Self Account Transfer</h2>
-
-        <form id="transForm" @submit.prevent="doTransfer()">
-            <div class="row ">
-                <div class="col-12 col-sm-6">
-                    <div class="border border-success boxshadow" style="min-height:10em;padding:1em 3em 1em 1em;margin-bottom:1em;">
-                        <h6>Transfer from</h6>
-                        <div hideRequiredMarker="false" floatLabel="auto">
-                            <select placeholder="from Account" v-model="transferForm.fromCardId" name="transferForm.fromCardId" @change="updateBalance()" required>
-                                <option>None</option>
-                                <option v-for="(card, index) in data.cardList" :value="card.card_id" :class="{'disabled':card.card_id==transferForm.toCardId}" :key="index">
-                                    {{card.card_id}}
-                                </option>
-                            </select>
-                           
-                        </div>
-                        <br/>
-                        <br/>
-                        <div hideRequiredMarker="false" floatLabel="auto">
-                            <input matInput placeholder="Balance" :value="balance" disabled class="text-info">
-                            <br/>
-                        </div>
-                    </div>
+        <Card style="width:95%;margin:20px;height:90%">
+            <p slot="title">Self Account Transfer</p>
+            <p>
+                <Row type="flex" justify="start" class="code-row-bg">
+                    <Col span="11">
+                        <Alert type="warning" style="height:100%;height:100%">
+                            <Card style="height:100%;height:100%">
+                                <p slot="title">Transfer From</p>
+                                <p>
+                                     <Select v-model="transferForm.fromCardId" clearable filterable style="width:200px" @on-change="updateBalance()">
+                                        <Option v-for="card in data.cardList" :value="card.card_id" :key="card.card_id" disasbled="card.card_id==transferForm.toCardId">
+                                            {{card.card_id}}
+                                        </Option>
+                                    </Select>
+                                </p>
+                                <br>
+                                <br>
+                                <p>
+                                    <Input v-model="balance" prefix="logo-usd" style="width: 200px" disabled />
+                                </p>
+                            </Card>
+                        </Alert>
+                    </Col>
+                    <Col span="11" offset="2">
+                        <Alert type="error" style="height:100%; width:100%">
+                            <Card style="height:100%;height:100%">
+                                <p slot="title">Transfer To</p>
+                                <p>
+                                     <Select v-model="transferForm.toCardId" clearable filterable style="width:200px">
+                                        <Option v-for="card in data.cardList" :value="card.card_id" :key="card.card_id" disasbled="card.card_id==transferForm.toCardId">
+                                            {{card.card_id}}
+                                        </Option>
+                                    </Select>
+                                </p>
+                                <br>
+                                <br>
+                                <p>
+                                    <InputNumber :max="1000000" v-model="transferForm.amount" style="width: 200px"/>
+                                    <Button shape="circle" icon="md-close" size="small" v-if="transferForm.amount" @click="transferForm.amount=0">
+                                    </Button>
+                                </p>
+                            </Card>
+                        </Alert>
+                    </Col>
+                </Row>
+                <br>
+                <br>
+                <div style="text-align: center;">
+                    <p v-if="transferForm.toCardId=='' || transferForm.fromCardId=='' || transferForm.amount== '' || transferForm.amount==null">
+                        <Button type="success" @click="doTransfer()" long ghost disabled>Transfer</Button>
+                    </p>
+                    <p v-else>
+                        <Button type="success" @click="doTransfer()" long ghost>Transfer</Button>
+                    </p>
                 </div>
-            
-                <div class="col-12 col-sm-6">
-                    <div class="border border-danger boxshadow" style="min-height:10em;padding:1em 3em 1em 1em;margin-bottom:1em;">
-                        <h6>Transfer to</h6>
-                        <div hideRequiredMarker="false" floatLabel="auto">
-                            <select placeholder="to Account" v-model="transferForm.toCardId" name="transferForm.toCardId" required>
-                                <option>None</option>
-                                <option v-for="(card, index) in data.cardList" :value="card.card_id" :class="{'disabled':card.card_id==transferForm.fromCardId}" :key="index">
-                                    {{card.card_id}}
-                                </option>
-                            </select>
-                            
-                        </div>
-                        <br/>
-                        <br/>
-                        <div hideRequiredMarker="false" floatLabel="auto"> 
-                            <input matInput name="transferForm.amount" v-model="transferForm.amount" placeholder="Amount" type="number" required>
-                            <button mat-button v-if="transferForm.amount" matSuffix mat-icon-button aria-label="Clear" @click="transferForm.amount=''">
-                                <i class="fa fa-close" style="color:green"></i>
-                            </button>
-                            <br/>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-12" style="text-align:center;">
-                    <button mat-raised-button color="primary" type="submit">Transfer</button>
-                         &nbsp;
-                    <button mat-raised-button color="warn" type="reset">Reset</button>
-                </div>
-            </div>
-        </form>
+            </p>
+        </Card>
+      
         <span class="mat-error">{{message}}</span>
 
         <!-- debug information -->
@@ -127,6 +127,7 @@ export default class Transfer extends Vue {
 
     updateBalance(){
         console.debug(this.data);
+
         let acc = this.data.cardList.filter((card: any)=>{
             return card.card_id == this.transferForm.fromCardId;
         });

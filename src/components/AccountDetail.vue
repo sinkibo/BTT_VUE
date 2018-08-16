@@ -16,7 +16,7 @@
           </div>
           <!--弹窗关闭按钮-->
           <div class="foot_close" @click="closeMyself">
-              <Icon type="md-close"></Icon>
+              <Icon type="md-close" style="transform: scale(2)"></Icon>
           </div>
         </div>
     </transition>
@@ -66,7 +66,7 @@ export default class AccountDetail extends Vue {
     z-index: 300;
  }
  .dialog_head{
-    width: 86.5%;
+    width: 50%;
     height: 43px;
     display: flex;
     justify-content: center;
@@ -79,17 +79,17 @@ export default class AccountDetail extends Vue {
     display: flex;
     justify-content: center;
     align-content: center;
-    width: 86.5%;
+    width: 50%;
     padding: 22px 0 47px 0;
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
   }
   .foot_close {
-    width: 50px;
-    height: 50px;
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
     background: #fcca03;
-    display: flex;
+    display: grid;
     justify-content: center;
     align-content: center;
     margin-top: -25px;

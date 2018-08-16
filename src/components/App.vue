@@ -3,7 +3,7 @@
     <Layout>
         <Header style="{position: 'fixed', width: '100%'}">
           <Menu mode="horizontal" theme="dark" active-name="1">
-            <div class="layout-logo">BTT</div>
+            <div class="layout-logo" @click="goHome"></div>
             <div class="layout-nav">
                 <MenuItem name="1">
                   <Icon type="ios-navigate" />
@@ -20,7 +20,8 @@
                   </template>
                   <MenuGroup title="help">
                       <MenuItem name="3-1"><router-link to="/reload">Reload</router-link></MenuItem>
-                      <MenuItem name="3-2"><router-link to="/ref">Ref</router-link></MenuItem>
+                      <MenuItem name="3-2"><router-link to="/ref">About BTT</router-link></MenuItem>
+                      <MenuItem name="3-2"><router-link to="https://www.baidu.com/">About Unicome</router-link></MenuItem>
                   </MenuGroup>
                 </Submenu>
             </div>
@@ -43,7 +44,9 @@ import { Vue, Component } from "vue-property-decorator";
 
 @Component
 export default class App extends Vue{
-  
+  goHome(){
+    this.$router.push('/home');
+  }
 }
 </script>
 
@@ -56,14 +59,15 @@ export default class App extends Vue{
     overflow: hidden;
 }
 .layout-logo{
-    width: 100px;
-    height: 30px;
-    background: #5b6270;
+    width: 45px;
+    height: 45px;
+    background-image: url("/static/images/logo.png");
     border-radius: 3px;
     float: left;
     position: relative;
     top: 15px;
     left: 20px;
+    cursor:pointer;
 }
 .layout-nav{
     width: 420px;

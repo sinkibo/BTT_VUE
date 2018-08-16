@@ -1,45 +1,47 @@
 <template>
     <div>
-        <h2 class="win-title">Transfer successfully</h2>
-        <div class="row ">
-            <div class="col-12 col-sm-6">
-                <div class="border border-success boxshadow" style="min-height:10em;padding:1em 3em 1em 1em;margin-bottom:1em;">
-                    <h6>Transfer from</h6>
-                    <div>
-                        <input matInput placeholder="from Account" :value="transferForm.fromCardId" disabled>
-                        <br/>
-                    </div>
-                    <br/>
-                    <br/>
-                    <div hideRequiredMarker="false" floatLabel="auto">
-                        <input matInput :value="transferForm.amount" placeholder="Amount" disabled>
-                    </div>
+        <Card style="width:95%;margin:20px;height:90%">
+            <p slot="title">Transfer Successfully</p>
+            <p>
+                <Row type="flex" justify="start" class="code-row-bg">
+                    <Col span="11">
+                        <Alert type="warning" style="height:100%;height:100%">
+                            <Card style="height:100%;height:100%">
+                                <p slot="title">Transfer From</p>
+                                <p>
+                                    <Input v-model="transferForm.fromCardId" style="width: 200px" disabled />
+                                </p>
+                                <br>
+                                <br>
+                                <p>
+                                    <Input v-model="transferForm.amount" prefix="logo-usd" style="width: 200px" disabled />
+                                </p>
+                            </Card>
+                        </Alert>
+                    </Col>
+                    <Col span="11" offset="2">
+                        <Alert type="error" style="height:100%; width:100%">
+                            <Card style="height:100%;height:100%">
+                                <p slot="title">Transfer To</p>
+                                <p>
+                                    <Input v-model="transferForm.toCardId" style="width: 200px" disabled />
+                                </p>
+                                <br>
+                                <br>
+                                <p>
+                                    <Input v-model="balance" style="width: 200px" disabled />
+                                </p>
+                            </Card>
+                        </Alert>
+                    </Col>
+                </Row>
+                <br>
+                <br>
+                <div style="text-align: center;">
+                    <Button type="success" @click="continueTransfer" long ghost>Continue Transfer</Button>
                 </div>
-            </div>
-
-            <div class="col-12 col-sm-6">
-                <div class="border border-danger boxshadow" style="min-height:10em;padding:1em 3em 1em 1em;margin-bottom:1em;">
-                    <h6>Transfer to</h6>
-                    <div>
-                        <input matInput :value="transferForm.toCardId" placeholder="to Account" disabled>
-                    </div>
-                    <br/>
-                    <br/>
-                    <div hideRequiredMarker="false" floatLabel="auto">
-                        <input matInput placeholder="Balance" :value="balance" disabled class="text-info">
-                        <br/>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-12" style="text-align:center;">
-                <a class="nav-link">
-                    <button mat-raised-button color="warn" type="button" @click="continueTransfer">Continue Transfer</button>
-                </a>
-            </div>
-        </div>
+            </p>
+        </Card>
     </div>
 </template>
 
@@ -57,6 +59,7 @@ export default class TransferResult extends Vue {
 
     constructor(){
         super();
+        
     }
 
     created(){
@@ -74,6 +77,7 @@ export default class TransferResult extends Vue {
     continueTransfer(){
         this.$router.push("/trans");
     }
+
 }
 </script>
 
