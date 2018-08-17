@@ -10,7 +10,10 @@
                                 <p slot="title">Transfer From</p>
                                 <p>
                                      <Select v-model="transferForm.fromCardId" clearable filterable style="width:200px" @on-change="updateBalance()">
-                                        <Option v-for="card in data.cardList" :value="card.card_id" :key="card.card_id" disasbled="card.card_id==transferForm.toCardId">
+                                        <Option v-for="card in data.cardList" :value="card.card_id" :key="card.card_id" v-show="card.card_id!=transferForm.toCardId">
+                                            {{card.card_id}}
+                                        </Option>
+                                        <Option v-for="card in data.cardList" :value="card.card_id" :key="card.card_id" v-show="card.card_id==transferForm.toCardId" disabled>
                                             {{card.card_id}}
                                         </Option>
                                     </Select>
@@ -29,7 +32,10 @@
                                 <p slot="title">Transfer To</p>
                                 <p>
                                      <Select v-model="transferForm.toCardId" clearable filterable style="width:200px">
-                                        <Option v-for="card in data.cardList" :value="card.card_id" :key="card.card_id" disasbled="card.card_id==transferForm.toCardId">
+                                        <Option v-for="card in data.cardList" :value="card.card_id" :key="card.card_id" v-show="card.card_id!=transferForm.fromCardId">
+                                            {{card.card_id}}
+                                        </Option>
+                                        <Option v-for="card in data.cardList" :value="card.card_id" :key="card.card_id" v-show="card.card_id==transferForm.fromCardId" disabled>
                                             {{card.card_id}}
                                         </Option>
                                     </Select>
