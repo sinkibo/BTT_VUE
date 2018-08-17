@@ -4,18 +4,19 @@
             <p slot="title">Customer Profile</p>
             <p>
                 <Row type="flex" justify="start" class="code-row-bg">
-                    <Col span="6">
+                    <Col span="7">
                         <Alert type="warning" style="height:100%;height:100%">
-                            <Card style="height:100%;height:100%">
+                            <Card style="height:100%;height:100%" class="layout-tablecell">
                                 <p slot="title">{{ auth.name }}</p>
                                 <p>UserID: {{ auth.account_id }}</p>
                                 <p>e-Mail: {{ auth.name }}@btt.com</p>
                                 <p>Balance: {{ account.total_balance }}</p>
+                                <p>Rating: <Rate disabled v-model="rate" /></p>
                                 <p><img class="img-thumbnail" style="margin-top: 2em;margin-bottom:2em; height:180px;" :src="auth.photo" alt="customer image"></p>
                             </Card>
                         </Alert>
                     </Col>
-                    <Col span="17" offset="1">
+                    <Col span="16" offset="1">
                         <Alert type="success" style="height:100%; width:100%">
                             <Card style="height:100%; width:100%">
                                 <p slot="title">Accounts</p>
@@ -130,6 +131,14 @@ export default class MyAccount extends Vue {
 
   closeDialog(){
     this.isShowPublish=false;
+  }
+
+  get rate():number{
+    let bs = this.account.total_balance || "";
+    let bn = parseInt(bs.replace(/\D+/g, ''));
+    let r = bn / 1000000;
+    if (r > 5) r = 5;
+    return r;
   }
 
 }

@@ -16,16 +16,14 @@
                 <Submenu name="3">
                   <template slot="title">
                       <Icon type="ios-stats" />
-                      <router-link to="/help">Help <b class="caret"></b></router-link>
+                      Help
                   </template>
-                  <MenuGroup title="help">
-                      <MenuItem name="3-1"><router-link to="/reload">Reload</router-link></MenuItem>
-                      <MenuItem name="3-2"><router-link to="/ref">About BTT</router-link></MenuItem>
-                      <MenuItem name="3-2"><router-link to="https://www.baidu.com/">About Unicome</router-link></MenuItem>
-                  </MenuGroup>
+                  <MenuItem name="3-1"><router-link to="/home">Reload</router-link></MenuItem>
+                  <MenuItem name="3-2"><router-link to="/about">About BTT</router-link></MenuItem>
+                  <MenuItem name="3-2"><router-link to="/unicome">About Unicome</router-link></MenuItem>
                 </Submenu>
             </div>
-            
+            <div class="layout-login-out-button" style="font-size:16px;color:white;font-weight:bolder">Welcome {{auths.isLoggedIn ? auths.user.name : ""}}&nbsp;&nbsp;<Button type="primary" v-if="auths.isLoggedIn" @click="logout">Logout</Button> <Button type="primary" v-if="!auths.isLoggedIn" @click="login">Login</Button> </div>
           </Menu>
         </Header>
         <Content class="layout-content">
@@ -40,13 +38,25 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from "vue-property-decorator";
+import { Vue, Component, Inject } from "vue-property-decorator";
+import { AuthService } from '../user/auth-service';
 
 @Component
 export default class App extends Vue{
-  goHome(){
+  @Inject('auths') private auths: AuthService | any;
+
+  goHome(): void{
     this.$router.push('/home');
   }
+
+  logout():void {
+    this.auths.logout();
+  }
+
+  login(): void{
+    this.$router.push({ path: 'login' });
+  }
+
 }
 </script>
 
@@ -72,7 +82,7 @@ export default class App extends Vue{
 .layout-nav{
     width: 420px;
     margin: 0 auto;
-    margin-right: 20px;
+    margin-right: 250px;
 }
 .layout-footer-right{
     text-align: right;
@@ -80,5 +90,10 @@ export default class App extends Vue{
 .layout-content{
   padding: '0 50px';
 
+}
+.layout-login-out-button{
+  float: right;
+  margin: 0 auto;
+  margin-right: 20px;
 }
 </style>

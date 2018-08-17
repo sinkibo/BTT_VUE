@@ -31,7 +31,7 @@ router.beforeEach((to,from,next) => {
   console.log("from above ++++++++");
   console.log(to);
   console.log("to above ++++");
-  if(from.name === null && to.name != 'Home' && to.name != 'Login'){
+  if(from.name == null && to.name != 'Home' && to.name != 'Login'){
     next('/login');
   }else
     next();
