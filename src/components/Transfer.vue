@@ -38,7 +38,7 @@
                                 <br>
                                 <br>
                                 <p>
-                                    <InputNumber :max="1000000" v-model="enternumber" style="width: 200px"/>
+                                    <InputNumber :max="balanceNumber" :min="0" v-model="enternumber" style="width: 200px"/>
                                     <Button shape="circle" icon="md-close" size="small" v-if="enternumber" @click="clear">
                                     </Button>
                                 </p>
@@ -89,8 +89,11 @@ export default {
       balance(){
           return this.$store.state.transfer.balance
       },
-      isDevMode(){
+      isDevMode(): Boolean{
           return this.$store.state.isDevMode
+      },
+      balanceNumber(){
+          return this.$store.state.transfer.balanceNumber
       },
       enternumber: {
           get () {

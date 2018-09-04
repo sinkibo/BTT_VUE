@@ -53,7 +53,8 @@ import createLogger from 'vuex/dist/logger'
     },
 
     setCardList (state, _data) {
-      state.account.cardList = Object.assign(...state.account.cardList, _data)
+      //state.account.cardList = Object.assign(...state.account.cardList, _data)累加合并
+      state.account.cardList = _data
     },
 
     setTotal_balance (state, _balance) {

@@ -3,6 +3,7 @@ import createLogger from 'vuex/dist/logger'
   const state = {
     message: "",
     balance: "",
+    balanceNumber: 0.0,
     transferData: {
       cardList:  [],
       transferForm: {
@@ -92,6 +93,7 @@ import createLogger from 'vuex/dist/logger'
 
     setBalance (state, _balance) {
       state.balance = _balance
+      state.balanceNumber = parseFloat(_balance.replace(/\,/g,"").substr(1))
     },
 
     updateAmount (state, _amount) {
