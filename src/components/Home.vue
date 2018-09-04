@@ -23,32 +23,37 @@
         </div>
 
         <!-- debug information -->
-        <div v-if="isDevMode">
-            <pre class="bg-success text-white" style="padding:1em;margin-top:1em;">
+        <div v-if="this.$parent.$store.state.debugModel">
+            <pre style="padding:1em;margin-top:1em;">
             Tech Notes:
 
             Configurations:
             @ /static/unicomsi/btt/clientengine/Configure.js
-            {{ btt.CONF }}
+            {{ this.clientEngineService._btt }}
             </pre>
         </div>
     </div>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop, Inject } from "vue-property-decorator";
 import {  AuthService } from '../user/auth-service';
 import { ClientEngineService } from '../app/unicomsi/btt/clientengine/vue/ClientEngineService';
-@Component
-export default class Home extends Vue {
-
-    @Inject('clientEngineService') private clientEngineService: ClientEngineService | any;
-    @Inject('auths') private auths: AuthService | any;
-    @Inject('isDevMode') private isDevMode: boolean | any;
-
-    login(){
+export default {
+    computed: {
+        auths(): AuthService{
+            return this.$store.state.auths;
+        },
+        clientEngineService(): ClientEngineService {
+            return this.$store.state.clientEngineService;
+        },
+        isDevMode(): boolean {
+            return this.$store.state.isDevMode;
+        }
+    },
+    methods: {
+        login(){
         this.$router.push({ path: 'login' });
     }
-    
+    }
 }
 
 </script>

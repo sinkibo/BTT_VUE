@@ -1,3 +1,4 @@
+
 <template>
     <div>
         <Card style="width:95%;margin:20px;height:90%">
@@ -9,8 +10,8 @@
                             <Card style="height:100%;height:100%">
                                 <p slot="title">Transfer From</p>
                                 <p>
-                                     <Select v-model="transferForm.fromCardId" clearable filterable style="width:200px" @on-change="updateBalance()">
-                                        <Option v-for="card in data.cardList" :value="card.card_id" :key="card.card_id" :disabled="card.card_id==transferForm.toCardId">
+                                     <Select v-model="fromAccount" clearable filterable style="width:200px" @on-change="updateBalance()">
+                                        <Option v-for="card in transferData.cardList" :value="card.card_id" :key="card.card_id" :disabled="card.card_id==toAccount">
                                             {{card.card_id}}
                                         </Option>
                                     </Select>
@@ -18,7 +19,7 @@
                                 <br>
                                 <br>
                                 <p>
-                                    <Input v-model="balance" prefix="logo-usd" style="width: 200px" disabled />
+                                    <Input :value="balance" prefix="logo-usd" style="width: 200px" disabled />
                                 </p>
                             </Card>
                         </Alert>
@@ -28,8 +29,8 @@
                             <Card style="height:100%;height:100%">
                                 <p slot="title">Transfer To</p>
                                 <p>
-                                     <Select v-model="transferForm.toCardId" clearable filterable style="width:200px">
-                                        <Option v-for="card in data.cardList" :value="card.card_id" :key="card.card_id" :disabled="card.card_id==transferForm.fromCardId">
+                                     <Select v-model="toAccount" clearable filterable style="width:200px">
+                                        <Option v-for="card in transferData.cardList" :value="card.card_id" :key="card.card_id" :disabled="card.card_id==fromAccount">
                                             {{card.card_id}}
                                         </Option>
                                     </Select>
@@ -37,8 +38,8 @@
                                 <br>
                                 <br>
                                 <p>
-                                    <InputNumber :max="1000000" v-model="transferForm.amount" style="width: 200px"/>
-                                    <Button shape="circle" icon="md-close" size="small" v-if="transferForm.amount" @click="transferForm.amount=0">
+                                    <InputNumber :max="1000000" v-model="enternumber" style="width: 200px"/>
+                                    <Button shape="circle" icon="md-close" size="small" v-if="enternumber" @click="clear">
                                     </Button>
                                 </p>
                             </Card>
@@ -48,11 +49,11 @@
                 <br>
                 <br>
                 <div style="text-align: center;">
-                    <p v-if="transferForm.toCardId=='' || transferForm.fromCardId=='' || transferForm.amount== '' || transferForm.amount==null">
-                        <Button type="success" @click="doTransfer()" long ghost disabled>Transfer</Button>
+                    <p v-if="fromAccount=='' || toAccount=='' || enternumber== '' || enternumber==null">
+                        <Button type="success" @click="transferAndRoute()" long ghost disabled>Transfer</Button>
                     </p>
                     <p v-else>
-                        <Button type="success" @click="doTransfer()" long ghost>Transfer</Button>
+                        <Button type="success" @click="transferAndRoute()" long ghost>Transfer</Button>
                     </p>
                 </div>
             </p>
@@ -69,76 +70,80 @@
         @ /src/app/trans/transfer
         Template-driven form with angular material controls
         Form Data:
-        {{transForm.value | json }}
+        {{transferForm | json }}
         </pre>
         </div>
     </div>
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop, Inject } from "vue-property-decorator";
-import { ClientEngineService } from '../app/unicomsi/btt/clientengine/vue/ClientEngineService';
-import { Flow } from '../app/unicomsi/btt/clientengine/vue/Flow'
+import { mapActions } from 'vuex'
+export default {
+  computed: {
+      message(){
+          return this.$store.state.transfer.message
+      },
+      transferData(){
+          return this.$store.state.transfer.transferData
+      },
+      balance(){
+          return this.$store.state.transfer.balance
+      },
+      isDevMode(){
+          return this.$store.state.isDevMode
+      },
+      enternumber: {
+          get () {
+            return this.$store.state.transfer.transferData.transferForm.amount
+          },
+          set (value) {
+            this.$store.commit('transfer/updateAmount', value)
+          }
+      },
+      fromAccount: {
+          get () {
+            return this.$store.state.transfer.transferData.transferForm.fromCardId
+          },
+          set (value) {
+            this.$store.commit('transfer/updateFromAccount', value)
+          }
+      },
+      toAccount: {
+          get () {
+            return this.$store.state.transfer.transferData.transferForm.toCardId
+          },
+          set (value) {
+            this.$store.commit('transfer/updateToAccount', value)
+          }
+      }
+  },
+  methods: {
+    ...mapActions ({
+       doTransfer: 'transfer/doTransfer',
+       updateBalance: 'transfer/updateBalance'
+    }),
+    clear (){
+        this.$store.commit('transfer/updateAmount',0)
+    },
+    transferAndRoute(){
+       this.doTransfer().then(
+        ()=>{
+          console.log('success transfer')
+          this.$router.push({ path: "/transResult" })
+        },
+        ()=>{
+         console.log('fail to transfer')
+        }
+       );
+    } 
+  },
 
-@Component
-export default class Transfer extends Vue {
-    @Inject('clientEngineService') private clientEngineService: ClientEngineService | any;
-    @Inject('isDevMode') private isDevMode: boolean | any;
-
-    message = "";
-    data: any = {};
-    transferForm: any = {};
-    balance: string = "";
-
-    constructor(){
-        super();
-    }
-
-    created(){
-        this.clientEngineService.launchFlow("AccountTransferFlow").then(
-            (store: any) => {
-                console.debug(store);
-                let flow: Flow = this.clientEngineService.getFlow();
-                this.data = flow.getStore().extractData();
-                this.transferForm = this.data.transferForm;
-                // return flow.changeEvent("login", this._user);
-            }
-        )
-    }
-
-    doTransfer(){
-        this.clientEngineService.getFlow("AccountTransferFlow").changeEvent("submit", this.data)
-        .then(
-            (store: any)=>{
-                console.debug(store);
-                let flow: Flow = this.clientEngineService.getFlow();
-                if (flow.getState() !="ResultState" ) // error at server side
-                {
-                    this.data = flow.getStore().extractData();
-                    this.transferForm = this.data.transferForm;
-                    return;
-                }
-                flow.changeEvent("exit").then(()=>{
-                    this.showResult();
-                });
-            }
-        );
-    }
-
-    updateBalance(){
-        console.debug(this.data);
-
-        let acc = this.data.cardList.filter((card: any)=>{
-            return card.card_id == this.transferForm.fromCardId;
-        });
-
-        this.balance = (acc && acc[0]) ? acc[0].balance : "";
-    }
-
-    showResult(){
-        this.$router.push({ path: "/transResult" });
-    }
+  created () {
+      this.$store.dispatch('transfer/loadData');
+  }
 }
+
+
 </script>
 
 <style>

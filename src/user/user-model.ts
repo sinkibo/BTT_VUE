@@ -27,6 +27,6 @@ export class UserModel {
   reset(){
     this.isLoggedIn = false;
     this._name = null;
-    this.account_id = "";
+    this.account_id = "BTT-User-1";
   }
 }

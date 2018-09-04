@@ -9,12 +9,12 @@
                             <Card style="height:100%;height:100%">
                                 <p slot="title">Transfer From</p>
                                 <p>
-                                    <Input v-model="transferForm.fromCardId" style="width: 200px" disabled />
+                                    <Input :value="transferData.transferForm.fromCardId" style="width: 200px" disabled />
                                 </p>
                                 <br>
                                 <br>
                                 <p>
-                                    <Input v-model="transferForm.amount" prefix="logo-usd" style="width: 200px" disabled />
+                                    <Input :value="transferData.transferForm.amount" prefix="logo-usd" style="width: 200px" disabled />
                                 </p>
                             </Card>
                         </Alert>
@@ -24,12 +24,12 @@
                             <Card style="height:100%;height:100%">
                                 <p slot="title">Transfer To</p>
                                 <p>
-                                    <Input v-model="transferForm.toCardId" style="width: 200px" disabled />
+                                    <Input :value="transferData.transferForm.toCardId" style="width: 200px" disabled />
                                 </p>
                                 <br>
                                 <br>
                                 <p>
-                                    <Input v-model="balance" style="width: 200px" disabled />
+                                    <Input :value="balance" style="width: 200px" prefix="logo-usd" disabled />
                                 </p>
                             </Card>
                         </Alert>
@@ -46,38 +46,32 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Inject } from "vue-property-decorator";
-import { ClientEngineService } from '../app/unicomsi/btt/clientengine/vue/ClientEngineService';
 
-@Component
-export default class TransferResult extends Vue {
-    @Inject('clientEngineService') private clientEngineService: ClientEngineService | any;
-
-    data: any = {};
-    transferForm: any = {};
-    balance: string = "";
-
-    constructor(){
-        super();
-        
-    }
+export default {
+    computed: {
+        message(){
+            return this.$store.state.transfer.message
+        },
+        transferData(){
+            return this.$store.state.transfer.transferData
+        },
+        balance(){
+            return this.$store.state.transfer.balance
+        },
+    },
+    methods: {
+        continueTransfer(){
+            this.$router.push("/trans");
+        }
+    },
 
     created(){
-        let flow = this.clientEngineService.getFlow("AccountTransferFlow");
-        this.data = flow.getStore().extractData();
-        this.transferForm = this.data.transferForm;
-        let acc = this.data.cardList.filter((card: any) => {
-            return card.card_id == this.transferForm.toCardId;
+        let acc = this.$store.state.transfer.transferData.cardList.filter((card: any) => {
+            return card.card_id == this.$store.state.transfer.transferData.transferForm.toCardId;
         });
-        
-        console.debug(this.transferForm);
-        this.balance = (acc && acc[0]) ? acc[0].balance : "";
+        let balance = (acc && acc[0]) ? acc[0].balance : "";
+        this.$store.commit('transfer/setBalance',balance);
     }
-
-    continueTransfer(){
-        this.$router.push("/trans");
-    }
-
 }
 </script>
 

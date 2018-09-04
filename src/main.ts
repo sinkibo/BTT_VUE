@@ -1,21 +1,22 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
+import vuex from 'vuex'
 import Router from 'vue-router'
 import Routers  from './router/index'
 import App from '@/components/App.vue'
 import Home from '@/components/Home.vue'
 import MyAccount from '@/components/MyAccount.vue'
+import AccountDetail from '@/components/AccountDetail.vue'
 import Transfer from '@/components/Transfer.vue'
 import TransferResult from '@/components/TransferResult.vue'
 import Login from '@/components/Login.vue'
-import { AuthService } from './user/auth-service'
-import { ClientEngineService } from './app/unicomsi/btt/clientengine/vue/ClientEngineService'
-import { UserModel } from "./user/user-model"
 import iView from 'iview'
 import { locale, Page } from 'iview'
 import lang from 'iview/dist/locale/en-US'
 import 'iview/dist/styles/iview.css'
+import store from './store'
+//import { sync } from 'vuex-router-sync'
 
 var padDate=function(va){
   va=va<10?'0'+va:va;
@@ -31,11 +32,16 @@ router.beforeEach((to,from,next) => {
   console.log("from above ++++++++");
   console.log(to);
   console.log("to above ++++");
+  //再secssion里面读取用户登陆信息。要是没有登陆就到login。要是登陆了就检查是否登陆超时，要死超时了还要去login界面，最好带一点标记能给出alert
   if(from.name == null && to.name != 'Home' && to.name != 'Login'){
     next('/login');
   }else
     next();
 });
+
+//const unsync = sync(store, router)
+//unsync() // Unsyncs store from router
+//sync(store, router, { moduleName: 'RouteModule' } )
 
 Vue.use(iView,{
   transfer: true,
@@ -59,14 +65,9 @@ Vue.filter('formatDate',function(val){
 new Vue({
   el: '#appdiv',
   router,
-  components: { App, MyAccount, Home, Login, Transfer, TransferResult },
-  template: '<App/>',
-  provide: {
-    clientEngineService: new ClientEngineService(window['BTT']),
-    auths: new AuthService(new ClientEngineService(window['BTT']), router, new UserModel()),
-    isDevMode: false
-   }
-
+  store,
+  components: { App, MyAccount, Home, Login, Transfer, TransferResult, AccountDetail },
+  template: '<App/>'
 })
 
 // 扩充

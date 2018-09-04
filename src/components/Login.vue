@@ -4,17 +4,17 @@
             <p slot="title">Login</p>
             <p>
                 <div>
-                    <Input type="text" :clearable=true :maxlength=20 prefix="ios-contact" placeholder="Enter name" style="width: auto" v-model="auths.user.account_id"/>
+                    <Input type="text" :clearable=true :maxlength=20 prefix="ios-contact" placeholder="Enter name" style="width: auto" v-model="username"/>
                 </div>
                 <br/>
                 <div>
-                    <Input type="password" :clearable=true :maxlength=20 prefix="ios-lock" placeholder="Enter password" style="width: auto" v-model="auths.user.password"/>
+                    <Input type="password" :clearable=true :maxlength=20 prefix="ios-lock" placeholder="Enter password" style="width: auto" v-model="pwd"/>
                 </div>
                 <br/>
             
                 <div>
-                    <Button v-if="!auths.isLoggedIn" type="primary" @click="doLogin">Start</Button>
-                    <Button type="warning" @click="logout" v-if="auths.isLoggedIn">Logout</Button>
+                    <Button v-if="!auths.isLoggedIn" type="primary" @click="loginAction">Start</Button>
+                    <Button type="warning" @click="logoutAction" v-if="auths.isLoggedIn">Logout</Button>
                 </div>
             </p>
         </Card>
@@ -37,50 +37,66 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop, Inject } from "vue-property-decorator";
-import { UserModel } from "../user/user-model";
-import { AuthService } from '../user/auth-service';
-import { ClientEngineService } from '../app/unicomsi/btt/clientengine/vue/ClientEngineService';
+import { mapActions } from 'vuex'
+import {  AuthService } from '../user/auth-service';
 
-@Component
-export default class Login extends Vue {
-    
-    @Inject('auths') private auths: AuthService | any;
-    @Inject('isDevMode') private isDevMode: boolean | any;
-    message = "";
 
-    doLogin(name:any): void {
-        this.message = 'Trying to log in ...';
-            this.auths.login().then(() => {
-                if (this.auths._user.isLoggedIn){
-                    // Get the redirect URL from our auth service
-                    // If no redirect has been set, use the default
-                    let redirect = this.auths.redirectUrl ? this.auths.redirectUrl : '/myAccount';
-
-                    // Set our navigation extras object
-                    // that passes on our global query params and fragment
-                    //let navigationExtras: NavigationExtras = {
-                    //queryParamsHandling: 'preserve',
-                   // };
-
-                    // Redirect the user
+export default {
+    computed: {
+        auths(): AuthService{
+            return this.$store.state.auths;
+        },
+        isDevMode(): boolean {
+            return this.$store.state.isDevMode;
+        },
+        message(): String{
+            return this.$store.state.message;
+        },
+        username: {
+          get () {
+            return this.$store.state.auths.user.account_id;
+          },
+          set (value) {
+            this.$store.commit('updateUserName', value)
+          }
+        },
+        pwd: {
+            get () {
+                return this.$store.state.auths.user.password
+            },
+            set (value) {
+                this.$store.commit('updatePWD', value)
+            }
+        },
+    },
+    methods: {
+        ...mapActions ({
+            doLogin: 'login',
+            doLogout: 'logout'
+        }),
+        loginAction(){
+            this.doLogin().then(
+                (redirect)=>{
+                    console.log('success login')
                     this.$router.push({ path: redirect });
-                }
-            }).catch(
-                (reason :any) => {
-                    this.message = reason.message ? reason.message : "Failed to login, please try again!";
+                },
+                ()=>{
+                    console.log('fail to login')
                 }
             );
+        },
+        logoutAction(){
+            this.doLogout().then(
+                (redirect)=>{
+                    console.log('success logout')
+                    this.$router.push({ path: redirect });
+                },
+                ()=>{
+                    console.log('fail to logout')
+                }
+            );
+        }
     }
-
-    logout() :void {
-            this.auths.logout();
-    }
-
-    get user() :any{
-        return this.auths._user;
-    }
-    
 }
 
 </script>

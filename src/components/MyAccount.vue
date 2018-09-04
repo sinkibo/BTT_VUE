@@ -44,10 +44,10 @@
             </p>
         </Card>
 
-        <AccouneDetail :is-show="isShowPublish" @on-close="closeDialog">
+        <AccountDetail :is-show="isShowPublish" @on-close="closeDialog">
             <div slot="header" style="width:100%">
                 <Alert type="error" style="layout-accountdetail-header">
-                    <h3>Account Histoy: {{this.history.selectCardId}}</h3>
+                    <h3>Account Histoy: {{selectCardId}}</h3>
                 </Alert>
             </div>
             <div slot="main" style="width:100%">
@@ -59,7 +59,7 @@
                         <Col span="5" class-name="layout-tablecol4">Amount</Col>
                         <Col span="4" class-name="layout-tablecol5">Details</Col>
                     </Row>
-                    <Row v-for="(item, index) in this.history.historyList" :key="index" type="flex" justify="start" class="code-row-bg" class-name="layout-tablecell">
+                    <Row v-for="(item, index) in historyList" :key="index" type="flex" justify="start" class="code-row-bg" class-name="layout-tablecell">
                         <Col span="5">{{index+1}}</Col>
                         <Col span="5" class-name="layout-col-color-blue">{{item.date | formatDate}}</Col>
                         <Col v-if="(item.amount+'').indexOf('-')>-1" span="5" class-name="layout-col-color-red">{{(item.amount+'').indexOf('-')>-1 ? "outcome" : "income"}}</Col>
@@ -70,77 +70,55 @@
                     </Row>
                 </Alert>
             </div>
-        </AccouneDetail>
+        </AccountDetail>
     </div>
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop, Inject, Model } from "vue-property-decorator";
 import { AccountModel, SubAccount } from '../trans/account-model';
 import { ClientEngineService } from '../app/unicomsi/btt/clientengine/vue/ClientEngineService';
 import { AuthService } from '../user/auth-service';
 import { UserModel } from '../user/user-model';
-import AccouneDetail from './AccountDetail.vue'
-
-@Component({
-    components: {AccouneDetail}
-})
-export default class MyAccount extends Vue {
-
-    @Inject('clientEngineService') private clientEngineService: ClientEngineService | any;
-    @Inject('isDevMode') private isDevMode: boolean | any;
-    @Inject('auths') private authService: AuthService | any;
-
-    
-    public account: AccountModel|any;
-    
-    public auth: UserModel|any = this.authService.user;
-
-    public history: any;
-
-    public isShowPublish: Boolean = false;
-    
-    constructor(){
-        super();
-        this.account = {};
-        this.history = {};
-        
-        this.clientEngineService.execOperation("AccountStatementOp")
-        .then(
-            (store :any)=>{
-                 //this.account = Object.assign({},this.account,store.extractData());
-                 this.$set(this.account, 'cardList', store.extractData().cardList);
-                 this.$set(this.account, 'total_balance', store.extractData().total_balance);
-            }
-        );
-
+import AccountDetail from './AccountDetail.vue'
+export default {
+  components: { AccountDetail },
+  computed: {
+      rate():number {
+        let bs = this.$store.state.myAccount.account.total_balance || "";
+        let bn = parseInt(bs.replace(/\D+/g, ''));
+        let r = bn / 1000000;
+        if (r > 5) r = 5;
+        return r;
+      },
+      auth(): UserModel{
+        return this.$store.state.auths.user;
+      },
+      account() {
+        return this.$store.state.myAccount.account;
+      },
+      selectCardId() {
+          return this.$store.state.myAccount.history.selectCardId;
+      },
+      historyList(){
+          return this.$store.state.myAccount.history.historyList;
+      },
+      isShowPublish(){
+          return this.$store.state.myAccount.isShowPublish;
+      }
+      
+  },
+  methods: {
+    toggleDetail(id: string) {
+        this.$store.dispatch('myAccount/getDetail',id);
+    },
+    closeDialog(){
+        this.$store.commit("myAccount/setShowPublish",false);
     }
+  },
 
-    toggleDetail(id: string, opened: boolean) {
-        console.debug(`sub-account(${id}) has been ${opened ? 'opened' : 'closed'}`);
-        this.clientEngineService.execOperation("AccountDetailOp", {selectCardId : id})
-        .then(
-            (store: any)=>{
-                console.debug(store.extractData());
-                this.$set(this.history, 'selectCardId', store.extractData().selectCardId);
-                this.$set(this.history, 'historyList', store.extractData().historyList);
-                this.isShowPublish = true;
-            }
-    );
+  created () {
+       this.$store.dispatch('myAccount/initAction');
   }
-
-  closeDialog(){
-    this.isShowPublish=false;
-  }
-
-  get rate():number{
-    let bs = this.account.total_balance || "";
-    let bn = parseInt(bs.replace(/\D+/g, ''));
-    let r = bn / 1000000;
-    if (r > 5) r = 5;
-    return r;
-  }
-
 }
 
 </script>

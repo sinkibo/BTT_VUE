@@ -21,9 +21,10 @@
                   <MenuItem name="3-1"><router-link to="/home">Reload</router-link></MenuItem>
                   <MenuItem name="3-2"><router-link to="/about">About BTT</router-link></MenuItem>
                   <MenuItem name="3-2"><router-link to="/unicome">About Unicome</router-link></MenuItem>
+                  <MenuItem name="3-3"><a href="#" @click="switchTechNotes()">Tech Notes</a></MenuItem>
                 </Submenu>
             </div>
-            <div class="layout-login-out-button" style="font-size:16px;color:white;font-weight:bolder">Welcome {{auths.isLoggedIn ? auths.user.name : ""}}&nbsp;&nbsp;<Button type="primary" v-if="auths.isLoggedIn" @click="logout">Logout</Button> <Button type="primary" v-if="!auths.isLoggedIn" @click="login">Login</Button> </div>
+            <div class="layout-login-out-button" style="font-size:16px;color:white;font-weight:bolder">Welcome {{auths.isLoggedIn ? auths.user.name : ""}}&nbsp;&nbsp;<Button type="primary" v-if="auths.isLoggedIn" @click="logoutAction">Logout</Button> <Button type="primary" v-if="!auths.isLoggedIn" @click="login">Login</Button> </div>
           </Menu>
         </Header>
         <Content class="layout-content">
@@ -38,25 +39,42 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Inject } from "vue-property-decorator";
 import { AuthService } from '../user/auth-service';
+import { mapActions } from 'vuex'
 
-@Component
-export default class App extends Vue{
-  @Inject('auths') private auths: AuthService | any;
+export default {
+    computed: {
+        auths(): AuthService{
+            return this.$store.state.auths;
+        }
+    },
+    methods: {
+        ...mapActions ({
+            doLogout: 'logout'
+        }),
+        goHome(): void{
+          this.$router.push('/home');
+        },
+        logoutAction(){
+            this.doLogout().then(
+                (redirect)=>{
+                    console.log('success logout')
+                    this.$router.push({ path: redirect });
+                },
+                ()=>{
+                    console.log('fail to logout')
+                }
+            );
+        },
 
-  goHome(): void{
-    this.$router.push('/home');
-  }
+        login(): void{
+          this.$router.push({ path: 'login' });
+        },
 
-  logout():void {
-    this.auths.logout();
-  }
-
-  login(): void{
-    this.$router.push({ path: 'login' });
-  }
-
+        switchTechNotes(): void{
+          this.$parent.$store.commit('changeDebugModel');
+        }
+    }
 }
 </script>
 
