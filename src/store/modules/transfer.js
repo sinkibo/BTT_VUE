@@ -1,4 +1,3 @@
-import createLogger from 'vuex/dist/logger'
 
   const state = {
     message: "",
@@ -29,12 +28,11 @@ import createLogger from 'vuex/dist/logger'
     loadData ({ state, commit, rootState }) {
       rootState.clientEngineService.launchFlow("AccountTransferFlow").then(
         (store) => {
-            createLogger("Success to launch Flow: AccountTransferFlow" + store);
             let flow = rootState.clientEngineService.getFlow();
             commit("setTransferData", flow.getStore().extractData());
         }
       ).catch((e) => {
-        createLogger("Fail to launch Flow: AccountTransferFlow")
+        console.log("Fail to launch Flow: AccountTransferFlow")
       })
     },
 
@@ -52,7 +50,7 @@ import createLogger from 'vuex/dist/logger'
         rootState.clientEngineService.getFlow("AccountTransferFlow").changeEvent("submit", state.transferData)
         .then(
           (store)=>{
-              createLogger("Success to do transfer" + store);
+              console.log("Success to do transfer" + store);
               let flow = rootState.clientEngineService.getFlow();
               if (flow.getState() !="ResultState" ) // error at server side
               {
@@ -69,13 +67,12 @@ import createLogger from 'vuex/dist/logger'
                   resolve();
                 }).catch(() => {
                   commit('setMessage',"Fail to do exit transfer flow.");
-                  createLogger("Fail to do exit transfer flow");
                   reject();
                 })
               }
           }
         ).catch(() => {
-          createLogger("Fail to do transfer")
+          console.log("Fail to do transfer")
         })
       });
     }

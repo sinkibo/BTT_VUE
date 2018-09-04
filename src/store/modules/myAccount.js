@@ -1,4 +1,3 @@
-import createLogger from 'vuex/dist/logger'
 
   const state = {
     message: "",
@@ -24,7 +23,6 @@ import createLogger from 'vuex/dist/logger'
         rootState.clientEngineService.execOperation("AccountStatementOp")
         .then(
             (store)=>{
-                createLogger("Success to launch Flow: AccountStatementOp" + store);
                 let flow = rootState.clientEngineService.getFlow();
                 commit("setCardList", store.extractData().cardList);
                 commit("setTotal_balance", store.extractData().total_balance);
@@ -36,7 +34,6 @@ import createLogger from 'vuex/dist/logger'
         rootState.clientEngineService.execOperation("AccountDetailOp", {selectCardId : id})
         .then(
             (store)=>{
-                createLogger("Success to launch Flow: AccountDetailOp" + store);
                 let flow = rootState.clientEngineService.getFlow();
                 commit("setSelectedCardId", store.extractData().selectCardId);
                 commit("setHistoryList", store.extractData().historyList);
