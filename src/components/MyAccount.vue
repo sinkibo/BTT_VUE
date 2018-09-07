@@ -1,40 +1,40 @@
 <template>
     <div>
-        <Card style="width:95%;margin:20px;height:90%">
+        <Card style="width:95%;margin:20px;height:fit-content">
             <p slot="title">Customer Profile</p>
             <p>
                 <Row type="flex" justify="start" class="code-row-bg">
-                    <Col span="7">
-                        <Alert type="warning" style="height:100%;height:100%">
+                    <Col :sm="24" :md="7">
+                        <Alert type="warning" style="height:100%;height:100%;padding-right:16px">
                             <Card style="height:100%;height:100%" class="layout-tablecell">
                                 <p slot="title">{{ auth.name }}</p>
                                 <p>UserID: {{ auth.account_id }}</p>
                                 <p>e-Mail: {{ auth.name }}@btt.com</p>
                                 <p>Balance: {{ account.total_balance }}</p>
                                 <p>Rating: <Rate disabled v-model="rate" /></p>
-                                <p><img class="img-thumbnail" style="margin-top: 2em;margin-bottom:2em; height:180px;" :src="auth.photo" alt="customer image"></p>
+                                <p><img class="img-thumbnail" style="margin-top: 2em;margin-bottom:2em; height:180px; max-width: -webkit-fill-available;" :src="auth.photo" alt="customer image"></p>
                             </Card>
                         </Alert>
                     </Col>
-                    <Col span="16" offset="1">
+                    <Col :sm="24" :md="{span: 16,offset: 1}">
                         <Alert type="success" style="height:100%; width:100%">
                             <Card style="height:100%; width:100%">
                                 <p slot="title">Accounts</p>
                                 <p>
                                     <Row class-name="layout-tablecell layout-headercell">
-                                        <Col span="5" class-name="layout-tablecol1">NO.</Col>
-                                        <Col span="5" class-name="layout-tablecol2">Account</Col>
-                                        <Col span="5" class-name="layout-tablecol3">Type</Col>
-                                        <Col span="5" class-name="layout-tablecol4">Blance</Col>
-                                        <Col span="4" class-name="layout-tablecol5">Details</Col>
+                                        <Col :md="5" :sm="4" class-name="layout-tablecol1">NO.</Col>
+                                        <Col :md="5" :sm="12" class-name="layout-tablecol2">Account</Col>
+                                        <Col :md="5" :sm="8" class-name="layout-tablecol3">Type</Col>
+                                        <Col :md="5" :sm="16" class-name="layout-tablecol4">Blance</Col>
+                                        <Col :md="4" :sm="8" class-name="layout-tablecol5">Details</Col>
                                     </Row>
                                     <Row v-for="(item, index) in account.cardList" :key="index" class-name="layout-tablecell">
-                                        <Col span="5">{{index+1}}</Col>
-                                        <Col span="5" class-name="layout-col-color-blue">{{item.card_id}}</Col>
-                                        <Col v-if="item.card_type == 'credit'" span="5" class-name="layout-col-color-red">{{item.card_type}}</Col>
-                                        <Col v-if="item.card_type == 'debit'" span="5">{{item.card_type}}</Col>
-                                        <Col span="5" class-name="layout-col-color-green">{{item.balance}}</Col>
-                                        <Col span="4"><div @click="toggleDetail(item.card_id)" style="cursor: pointer;">......</div></Col>
+                                        <Col :md="5" :sm="4">{{index+1}}</Col>
+                                        <Col :md="5" :sm="12" class-name="layout-col-color-blue">{{item.card_id}}</Col>
+                                        <Col :md="5" :sm="8" v-if="item.card_type == 'credit'" class-name="layout-col-color-red">{{item.card_type}}</Col>
+                                        <Col :md="5" :sm="8" v-if="item.card_type == 'debit'">{{item.card_type}}</Col>
+                                        <Col :md="5" :sm="16" class-name="layout-col-color-green">{{item.balance}}</Col>
+                                        <Col :md="4" :sm="8"><div @click="toggleDetail(item.card_id)" style="cursor: pointer;">......</div></Col>
                                     </Row>
                                 </p>
                             </Card>
@@ -53,20 +53,20 @@
             <div slot="main" style="width:100%">
                 <Alert type="success" style="margin: 10px;">
                     <Row type="flex" justify="start" class="code-row-bg" class-name="layout-tablecell layout-headercell">
-                        <Col span="5" class-name="layout-tablecol1">NO.</Col>
-                        <Col span="5" class-name="layout-tablecol2">Date</Col>
-                        <Col span="5" class-name="layout-tablecol3">Type</Col>
-                        <Col span="5" class-name="layout-tablecol4">Amount</Col>
-                        <Col span="4" class-name="layout-tablecol5">Details</Col>
+                        <Col :md="5" :sm="4" class-name="layout-tablecol1">NO.</Col>
+                        <Col :md="5" :sm="12" class-name="layout-tablecol2">Date</Col>
+                        <Col :md="5" :sm="8" class-name="layout-tablecol3">Type</Col>
+                        <Col :md="5" :sm="16" class-name="layout-tablecol4">Amount</Col>
+                        <Col :md="4" :sm="8" class-name="layout-tablecol5">Details</Col>
                     </Row>
                     <Row v-for="(item, index) in historyList" :key="index" type="flex" justify="start" class="code-row-bg" class-name="layout-tablecell">
-                        <Col span="5">{{index+1}}</Col>
-                        <Col span="5" class-name="layout-col-color-blue">{{item.date | formatDate}}</Col>
-                        <Col v-if="(item.amount+'').indexOf('-')>-1" span="5" class-name="layout-col-color-red">{{(item.amount+'').indexOf('-')>-1 ? "outcome" : "income"}}</Col>
-                        <Col v-else="" span="5">{{(item.amount+'').indexOf('-')>-1 ? "outcome" : "income"}}</Col>
-                        <Col span="5" class-name="layout-col-color-green">{{item.amount}}</Col>
-                        <Col v-if="item.name == 'Transfer'" span="4" class-name="layout-col-color-yellow">{{item.name}}</Col>
-                        <Col v-else="" span="4">{{item.name}}</Col>
+                        <Col :md="5" :sm="4">{{index+1}}</Col>
+                        <Col :md="5" :sm="12" class-name="layout-col-color-blue">{{item.date | formatDate}}</Col>
+                        <Col :md="5" :sm="8" v-if="(item.amount+'').indexOf('-')>-1" class-name="layout-col-color-red">{{(item.amount+'').indexOf('-')>-1 ? "outcome" : "income"}}</Col>
+                        <Col :md="5" :sm="8" v-else="">{{(item.amount+'').indexOf('-')>-1 ? "outcome" : "income"}}</Col>
+                        <Col :md="5" :sm="16" class-name="layout-col-color-green">{{item.amount}}</Col>
+                        <Col :md="4" :sm="8" v-if="item.name == 'Transfer'" class-name="layout-col-color-yellow">{{item.name}}</Col>
+                        <Col :md="4" :sm="8" v-else="">{{item.name}}</Col>
                     </Row>
                 </Alert>
             </div>

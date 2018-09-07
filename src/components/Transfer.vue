@@ -1,11 +1,11 @@
 
 <template>
     <div>
-        <Card style="width:95%;margin:20px;height:90%">
+        <Card style="width:95%;margin:20px;height:fit-content">
             <p slot="title">Self Account Transfer</p>
             <p>
                 <Row type="flex" justify="start" class="code-row-bg">
-                    <Col span="11">
+                    <Col :md="{span:11}" :sm="24">
                         <Alert type="warning" style="height:100%;height:100%">
                             <Card style="height:100%;height:100%">
                                 <p slot="title">Transfer From</p>
@@ -24,7 +24,7 @@
                             </Card>
                         </Alert>
                     </Col>
-                    <Col span="11" offset="2">
+                    <Col :md="{span:11, offset:2}" :sm="24">
                         <Alert type="error" style="height:100%; width:100%">
                             <Card style="height:100%;height:100%">
                                 <p slot="title">Transfer To</p>

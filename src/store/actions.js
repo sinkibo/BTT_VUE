@@ -42,6 +42,7 @@ export const logout = ({ state, commit }) => {
             commit("updateNick",null);
             commit("updateUserName","BTT-User-1");
             window.alert("You're now logged out!");
+            commit('setMessage','');
             resolve("/home");
         }).catch(
             (reason) => {
