@@ -13,7 +13,7 @@
                 </CarouselItem>
                 <CarouselItem>
                     <div class="demo-carousel">
-                        <img src="../../static/images/sample.jpg" alt="BTT Angular Sample" style="display: block; width: 100%; height:100%">
+                        <img src="../../static/images/sample.jpg" alt="BTT Vue Sample" style="display: block; width: 100%; height:100%">
                         <div>
                         <a href="https://support.unicomsi.com/manuals/mbn/900/">About BTT Client Engine</a>
                         </div>

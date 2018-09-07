@@ -68,7 +68,7 @@
 
         Transfer Component
         @ /src/app/trans/transfer
-        Template-driven form with angular material controls
+        Template-driven form with vue material controls
         Form Data:
         {{transferForm | json }}
         </pre>
