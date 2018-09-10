@@ -1,6 +1,6 @@
 <template>
     <div class="login">
-        <Card :bordered="false">
+        <Card :bordered="true">
             <p slot="title">Login</p>
             <p>
                 <div>
@@ -107,7 +107,6 @@ export default {
 
 <style>
 .login{
-    background:#eee;
     padding: 20px;
     width: 300px;
     margin: 0 auto;
