@@ -71,6 +71,21 @@
                 </Alert>
             </div>
         </AccountDetail>
+
+        <!-- debug information -->
+        <div v-if="this.$parent.$store.state.isDevMode">
+            <pre class="bg-success text-white" style="padding:1em;margin-top:1em;background-color: #28a745!important;color: #fff!important;">
+Tech Notes:
+
+Transfer Module
+@ /src/app/components/MyAccount
+BTT Operation: AccountStatementOp
+This is a well designed responsive page.
+You can try it on Mobile, Pad and Desktop.
+Or just resize your browser!
+            </pre>
+        </div>
+
     </div>
 </template>
 

@@ -62,15 +62,15 @@
         <span class="mat-error">{{message}}</span>
 
         <!-- debug information -->
-        <div v-if="isDevMode">
-        <pre class="bg-success text-white" style="padding:1em;margin-top:1em;">
-        Tech Notes:
+        <div v-if="this.$parent.$store.state.isDevMode">
+        <pre class="bg-success text-white" style="padding:1em;margin-top:1em;background-color: #28a745!important;color: #fff!important;">
+Tech Notes:
 
-        Transfer Component
-        @ /src/app/trans/transfer
-        Template-driven form with vue material controls
-        Form Data:
-        {{transferForm | json }}
+Transfer Component
+@ /src/app/components/Transfer
+Template-driven form with vue material controls
+Form Data:
+{{this.$store.state.transfer.transferData.transferForm}}
         </pre>
         </div>
     </div>

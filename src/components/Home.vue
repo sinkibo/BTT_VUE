@@ -23,13 +23,12 @@
         </div>
 
         <!-- debug information -->
-        <div v-if="this.$parent.$store.state.debugModel">
-            <pre style="padding:1em;margin-top:1em;">
-            Tech Notes:
-
-            Configurations:
-            @ /static/unicomsi/btt/clientengine/Configure.js
-            {{ this.clientEngineService._btt }}
+        <div v-if="this.$parent.$store.state.isDevMode">
+            <pre style="padding:1em;margin-top:1em;background-color: #28a745!important;color: #fff!important;">
+Tech Notes:
+Configurations:
+@ /static/unicomsi/btt/clientengine/Configure.js
+{{ this.$parent.$store.state.clientEngineService._BTT.CONF}}
             </pre>
         </div>
     </div>

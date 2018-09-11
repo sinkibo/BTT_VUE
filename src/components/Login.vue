@@ -21,16 +21,16 @@
         <span class="mat-error">{{ message }}</span>
 
         <!-- debug information -->
-        <div v-if="isDevMode">
-            <pre class="bg-success text-white" style="padding:1em;margin-top:1em;">
-            Tech Notes:
+        <div v-if="this.$parent.$store.state.isDevMode">
+            <pre class="bg-success text-white" style="padding:1em;margin-top:1em;background-color: #28a745!important;color: #fff!important;">
+Tech Notes:
 
-            Login Module
-            @ /src/components/login
-                Vue Materail
-                BTT Flow: LoginFlow
-                Form data:
-                {{loginForm.value | json }}
+Transfer Module
+@ /src/components/login
+Vue Materail
+BTT Flow: LoginFlow
+Form data:
+{{this.$store.state.auths.user}}
             </pre>
         </div>
     </div>
