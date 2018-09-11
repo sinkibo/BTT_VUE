@@ -1,6 +1,13 @@
-# y
+# BTT Vue Example
 
-> y
+Vue(Vuex) is one of the popular web development framework
+
+BTT provides an adapter for Vue to accelerate the development
+
+Customer can adopt Vue and integrate it with BTT Client Engine
+
+BTT also provides an example to demonstrate the best practice
+
 
 ## Build Setup
 
