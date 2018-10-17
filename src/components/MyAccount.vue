@@ -25,7 +25,7 @@
                                         <Col :md="5" :sm="4" class-name="layout-tablecol1">NO.</Col>
                                         <Col :md="5" :sm="12" class-name="layout-tablecol2">Account</Col>
                                         <Col :md="5" :sm="8" class-name="layout-tablecol3">Type</Col>
-                                        <Col :md="5" :sm="16" class-name="layout-tablecol4">Blance</Col>
+                                        <Col :md="5" :sm="16" class-name="layout-tablecol4">Balance</Col>
                                         <Col :md="4" :sm="8" class-name="layout-tablecol5">Details</Col>
                                     </Row>
                                     <Row v-for="(item, index) in account.cardList" :key="index" class-name="layout-tablecell">
@@ -47,7 +47,7 @@
         <AccountDetail :is-show="isShowPublish" @on-close="closeDialog">
             <div slot="header" style="width:100%">
                 <Alert type="error" style="layout-accountdetail-header">
-                    <h3>Account Histoy: {{selectCardId}}</h3>
+                    <h3>Account History: {{selectCardId}}</h3>
                 </Alert>
             </div>
             <div slot="main" style="width:100%">

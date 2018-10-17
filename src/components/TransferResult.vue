@@ -61,6 +61,7 @@ export default {
     },
     methods: {
         continueTransfer(){
+            this.$store.dispatch('transfer/updateBalance');
             this.$router.push("/trans");
         }
     },

@@ -38,7 +38,7 @@ define({
 
 	REQUEST_HANDLER: (function () {
 		// var _BASE = "http://192.168.56.103:8080/BTTServerProject/"; // must be postfixed with "/"
-		var _BASE = "http://10.200.0.139:8080/BTTServerProject/"; // must be postfixed with "/"
+		var _BASE = "http://10.200.0.178:8080/BTTServerProject/"; // must be postfixed with "/"
 		// var _BASE = ""; // empty means the current context root
 		return {
 			BASE: _BASE,

@@ -129,6 +129,7 @@ export default {
         this.$store.commit('transfer/updateAmount',0)
     },
     transferAndRoute(){
+       this.$store.dispatch('myAccount/initAction');
        this.doTransfer().then(
         ()=>{
           console.log('success transfer')

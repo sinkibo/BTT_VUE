@@ -13,7 +13,7 @@
             </MenuItem>
             <MenuItem name="2">
               <Icon type="ios-people" />
-              <router-link to="/trans">Transer</router-link>
+              <router-link to="/trans">Transfer</router-link>
             </MenuItem>
             <Submenu name="3">
               <template slot="title">
@@ -22,7 +22,7 @@
               </template>
               <MenuItem name="3-1"><router-link to="/home">Reload</router-link></MenuItem>
               <MenuItem name="3-2"><router-link to="/about">About BTT</router-link></MenuItem>
-              <MenuItem name="3-2"><router-link to="/unicome">About Unicome</router-link></MenuItem>
+              <MenuItem name="3-2"><router-link to="/unicom">About Unicom</router-link></MenuItem>
               <MenuItem name="3-3"><a href="#" @click="switchTechNotes()">Tech Notes</a></MenuItem>
             </Submenu>            
           </Menu>  

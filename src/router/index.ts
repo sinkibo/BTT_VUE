@@ -5,7 +5,7 @@ import Transfer from '@/components/Transfer.vue'
 import TransferResult from '@/components/TransferResult.vue'
 import Login from '@/components/Login.vue'
 import About from '@/components/About.vue'
-import Unicome from '@/components/Unicome.vue'
+import Unicom from '@/components/Unicom.vue'
 
 export default new Router({
     routes: [
@@ -45,9 +45,9 @@ export default new Router({
         component: About
       },
       {
-        path: '/unicome',
-        name: 'Unicome',
-        component: Unicome
+        path: '/unicom',
+        name: 'Unicom',
+        component: Unicom
       }
 
   ]
