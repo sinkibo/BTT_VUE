@@ -129,10 +129,12 @@ export default {
         this.$store.commit('transfer/updateAmount',0)
     },
     transferAndRoute(){
-       this.$store.dispatch('myAccount/initAction');
+
        this.doTransfer().then(
         ()=>{
           console.log('success transfer')
+          this.$store.dispatch('transfer/updateToBalance');
+          this.$store.dispatch('myAccount/initAction');//update myAccount data,because the balance was changed.
           this.$router.push({ path: "/transResult" })
         },
         ()=>{

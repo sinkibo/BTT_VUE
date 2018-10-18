@@ -56,11 +56,12 @@ export default {
             return this.$store.state.transfer.transferData
         },
         balance(){
-            return this.$store.state.transfer.balance
+            return this.$store.state.transfer.toBalance
         },
     },
     methods: {
         continueTransfer(){
+            this.$store.dispatch('transfer/loadData');
             this.$store.dispatch('transfer/updateBalance');
             this.$router.push("/trans");
         }

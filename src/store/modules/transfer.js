@@ -2,7 +2,9 @@
   const state = {
     message: "",
     balance: "",
+    toBalance: "",
     balanceNumber: 0.0,
+    toBalanceNumber: 0.0,
     transferData: {
       cardList:  [],
       transferForm: {
@@ -45,6 +47,15 @@
       commit("setBalance",_balance);
     },
 
+    updateToBalance ({ state, commit, rootState }) {
+      let acc = state.transferData.cardList.filter((card)=>{
+        return card.card_id == state.transferData.transferForm.toCardId;
+      });
+
+      let _balance = (acc && acc[0]) ? acc[0].balance : "";
+      commit("setToBalance",_balance);
+    },
+
     doTransfer ({ state, commit, rootState }) {
       return new Promise((resolve, reject) => {
         rootState.clientEngineService.getFlow("AccountTransferFlow").changeEvent("submit", state.transferData)
@@ -60,10 +71,9 @@
               }else{
                 flow.changeEvent("exit").then(()=>{
                   let transferResultData = flow.getStore().extractData();
-                  transferResultData.transferForm.amount = parseFloat(transferResultData.transferForm.amount.replace("$",""));
+                  transferResultData.transferForm.amount = parseFloat(transferResultData.transferForm.amount.replace("$","").replace(/,/g,""));
                   commit('setTransferData',transferResultData);
                   commit('setMessage',"Success to Transfer!");
-                  //prepare balance for to Account.
                   resolve();
                 }).catch(() => {
                   commit('setMessage',"Fail to do exit transfer flow.");
@@ -71,7 +81,8 @@
                 })
               }
           }
-        ).catch(() => {
+        ).catch((e) => {
+          commit('setMessage',"Success to Transfer!"+e.response.responseText);
           console.log("Fail to do transfer")
         })
       });
@@ -91,6 +102,11 @@
     setBalance (state, _balance) {
       state.balance = _balance
       state.balanceNumber = parseFloat(_balance.replace(/\,/g,"").substr(1))
+    },
+
+    setToBalance (state, _balance) {
+      state.toBalance = _balance
+      state.toBalanceNumber = parseFloat(_balance.replace(/\,/g,"").substr(1))
     },
 
     updateAmount (state, _amount) {
