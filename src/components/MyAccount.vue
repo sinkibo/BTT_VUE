@@ -51,24 +51,27 @@
                 </Alert>
             </div>
             <div slot="main" style="width:100%">
-                <Alert type="success" style="margin: 10px;">
-                    <Row type="flex" justify="start" class="code-row-bg" class-name="layout-tablecell layout-headercell">
-                        <Col :md="5" :sm="4" class-name="layout-tablecol1">NO.</Col>
-                        <Col :md="5" :sm="12" class-name="layout-tablecol2">Date</Col>
-                        <Col :md="5" :sm="8" class-name="layout-tablecol3">Type</Col>
-                        <Col :md="5" :sm="16" class-name="layout-tablecol4">Amount</Col>
-                        <Col :md="4" :sm="8" class-name="layout-tablecol5">Details</Col>
-                    </Row>
-                    <Row v-for="(item, index) in historyList" :key="index" type="flex" justify="start" class="code-row-bg" class-name="layout-tablecell">
-                        <Col :md="5" :sm="4">{{index+1}}</Col>
-                        <Col :md="5" :sm="12" class-name="layout-col-color-blue">{{item.date | formatDate}}</Col>
-                        <Col :md="5" :sm="8" v-if="(item.amount+'').indexOf('-')>-1" class-name="layout-col-color-red">{{(item.amount+'').indexOf('-')>-1 ? "outcome" : "income"}}</Col>
-                        <Col :md="5" :sm="8" v-else="">{{(item.amount+'').indexOf('-')>-1 ? "outcome" : "income"}}</Col>
-                        <Col :md="5" :sm="16" class-name="layout-col-color-green">{{item.amount}}</Col>
-                        <Col :md="4" :sm="8" v-if="item.name == 'Transfer'" class-name="layout-col-color-yellow">{{item.name}}</Col>
-                        <Col :md="4" :sm="8" v-else="">{{item.name}}</Col>
-                    </Row>
-                </Alert>
+                <div>
+                    <Alert type="success" style="margin: 10px;">
+                        <Row type="flex" justify="start" class="code-row-bg" class-name="layout-tablecell layout-headercell">
+                            <Col :md="5" :sm="4" class-name="layout-tablecol1">NO.</Col>
+                            <Col :md="5" :sm="12" class-name="layout-tablecol2">Date</Col>
+                            <Col :md="5" :sm="8" class-name="layout-tablecol3">Type</Col>
+                            <Col :md="5" :sm="16" class-name="layout-tablecol4">Amount</Col>
+                            <Col :md="4" :sm="8" class-name="layout-tablecol5">Details</Col>
+                        </Row>
+                        <Row v-for="(item, index) in subHistoryList" :key="index" type="flex" justify="start" class="code-row-bg" class-name="layout-tablecell">
+                            <Col :md="5" :sm="4">{{(pageNum - 1) * pageSize  + index +1}}</Col>
+                            <Col :md="5" :sm="12" class-name="layout-col-color-blue">{{item.date | formatDate}}</Col>
+                            <Col :md="5" :sm="8" v-if="(item.amount+'').indexOf('-')>-1" class-name="layout-col-color-red">{{(item.amount+'').indexOf('-')>-1 ? "outcome" : "income"}}</Col>
+                            <Col :md="5" :sm="8" v-else="">{{(item.amount+'').indexOf('-')>-1 ? "outcome" : "income"}}</Col>
+                            <Col :md="5" :sm="16" class-name="layout-col-color-green">{{item.amount}}</Col>
+                            <Col :md="4" :sm="8" v-if="item.name == 'Transfer'" class-name="layout-col-color-yellow">{{item.name}}</Col>
+                            <Col :md="4" :sm="8" v-else="">{{item.name}}</Col>
+                        </Row>
+                    </Alert>
+                    <Page style="text-align: center;" :total="pageTotal" size="small" :current="pageNum" :page-size="pageSize" show-elevator  show-total placement="top" @on-change="handlePage" @on-page-size-change='handlePageSize'></Page>
+                </div>
             </div>
         </AccountDetail>
 
@@ -117,10 +120,21 @@ export default {
       historyList(){
           return this.$store.state.myAccount.history.historyList;
       },
+      subHistoryList(){
+          return this.$store.state.myAccount.history.subHistoryList;
+      },
       isShowPublish(){
           return this.$store.state.myAccount.isShowPublish;
+      },
+      pageNum(){
+          return this.$store.state.myAccount.history.pageNum;
+      },
+      pageSize(){
+          return this.$store.state.myAccount.history.pageSize;
+      },
+      pageTotal(){
+          return this.$store.state.myAccount.history.pageTotal;
       }
-      
   },
   methods: {
     toggleDetail(id: string) {
@@ -128,6 +142,15 @@ export default {
     },
     closeDialog(){
         this.$store.commit("myAccount/setShowPublish",false);
+        this.$store.commit("myAccount/setPageNum",1);
+    },
+    handlePage(value) {
+      this.$store.commit("myAccount/setPageNum",value);
+      this.$store.commit("myAccount/setSubHistoryList");
+    },
+    handlePageSize(value) {
+      this.$store.commit("myAccount/setPageSize",value);
+      this.$store.commit("myAccount/setSubHistoryList");
     }
   },
 

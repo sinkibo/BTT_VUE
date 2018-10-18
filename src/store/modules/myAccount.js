@@ -4,7 +4,11 @@
     isShowPublish: false,
     history: {
         selectCardId: null,
-        historyList: []
+        historyList: [],
+        subHistoryList: [],
+        pageTotal: 0,
+        pageNum: 1,
+        pageSize: 10,
     },
     account: {
         cardList:[],
@@ -38,6 +42,8 @@
                 commit("setSelectedCardId", store.extractData().selectCardId);
                 commit("setHistoryList", store.extractData().historyList);
                 commit("setShowPublish",true);
+                commit("setPageTotal",store.extractData().historyList.length);
+                commit("setSubHistoryList");
             }
         );
     }
@@ -47,6 +53,18 @@
   const mutations = {
     setMessage (state, _message) {
       state.message = _message
+    },
+
+    setPageNum (state, _pageNum) {
+        state.history.pageNum = _pageNum
+    },
+
+    setPageSize (state, _pageSize) {
+        state.history.pageSize = _pageSize
+    },
+
+    setPageTotal (state, _pageTotal) {
+        state.history.pageTotal = _pageTotal
     },
 
     setCardList (state, _data) {
@@ -64,6 +82,12 @@
 
     setHistoryList (state, _data) {
         state.history.historyList = _data
+    },
+
+    setSubHistoryList (state) {
+        var subListFrom = (state.history.pageNum - 1) * state.history.pageSize;
+        var subListTo = Math.min(subListFrom + state.history.pageSize,state.history.pageTotal)
+        state.history.subHistoryList = state.history.historyList.slice(subListFrom,subListTo)
     },
 
     setShowPublish  (state, value) {
