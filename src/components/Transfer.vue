@@ -10,11 +10,9 @@
                             <Card style="height:100%;height:100%">
                                 <p slot="title">Transfer From</p>
                                 <p>
-                                     <Select v-model="fromAccount" clearable filterable style="width:200px" @on-change="updateBalance()">
-                                        <Option v-for="card in transferData.cardList" :value="card.card_id" :key="card.card_id" :disabled="card.card_id==toAccount">
-                                            {{card.card_id}}
-                                        </Option>
-                                    </Select>
+                                     <Select v-model="fromAccount" filterable clearable  style="width:200px" @on-change="updateBalance()">
+                                        <Option v-for="card in transferData.cardList" :value="card.card_id" :key="card.card_id" :disabled="card.card_id==toAccount">{{card.card_id}}</Option>
+                                    </Select>    
                                 </p>
                                 <br>
                                 <br>
@@ -30,9 +28,7 @@
                                 <p slot="title">Transfer To</p>
                                 <p>
                                      <Select v-model="toAccount" clearable filterable style="width:200px">
-                                        <Option v-for="card in transferData.cardList" :value="card.card_id" :key="card.card_id" :disabled="card.card_id==fromAccount">
-                                            {{card.card_id}}
-                                        </Option>
+                                        <Option v-for="card in transferData.cardList" :value="card.card_id" :key="card.card_id" :disabled="card.card_id==fromAccount">{{card.card_id}}</Option>
                                     </Select>
                                 </p>
                                 <br>
@@ -141,7 +137,17 @@ export default {
          console.log('fail to transfer')
         }
        );
+    },
+    reloadData(){
+        if(this.$route.fullPath == "/trans"){
+            this.$store.dispatch('transfer/loadData');
+        }
     } 
+  },
+
+  watch: {
+      // 如果路由有变化，会再次执行该方法
+    '$route': "reloadData"
   },
 
   created () {

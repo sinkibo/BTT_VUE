@@ -100,12 +100,12 @@
     },
 
     setBalance (state, _balance) {
-      state.balance = _balance
+      state.balance = _balance.replace(/\$/g,"")
       state.balanceNumber = parseFloat(_balance.replace(/\,/g,"").substr(1))
     },
 
     setToBalance (state, _balance) {
-      state.toBalance = _balance
+      state.toBalance = _balance.replace(/\$/g,"")
       state.toBalanceNumber = parseFloat(_balance.replace(/\,/g,"").substr(1))
     },
 
